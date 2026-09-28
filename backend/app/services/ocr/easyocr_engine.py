@@ -15,7 +15,7 @@ class EasyOCREngine(BaseOCREngine):
             return self._reader is not None
         try:
             import easyocr
-            self._reader = easyocr.Reader(['en'], gpu=False)
+            self._reader = easyocr.Reader(['en'], gpu=False, verbose=False)
             self._initialized = True
             return True
         except ImportError:

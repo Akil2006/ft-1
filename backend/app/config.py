@@ -16,7 +16,7 @@ class Settings(BaseSettings):
     EVIDENCE_DIR: str = "./storage/evidence"
     REPORT_DIR: str = "./storage/reports"
 
-    OCR_ENGINE: str = "paddle"
+    OCR_ENGINE: str = "easyocr"
     OCR_FALLBACK_ENABLED: bool = True
 
     MAX_UPLOAD_SIZE_MB: int = 10
