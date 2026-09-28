@@ -1,0 +1,128 @@
+[
+  {
+    "rule_id": "LM-NAME-001",
+    "rule_version": "2026.01",
+    "rule_title": "Common or Generic Commodity Name Declaration",
+    "field": "product_name",
+    "applicability": {
+      "package_type": "prepackaged_commodity",
+      "categories": ["all"]
+    },
+    "requirement": "Every package shall bear the generic or common name of the commodity contained within.",
+    "validation_method": "field_present_and_readable",
+    "severity": "HIGH",
+    "source_document": "Legal Metrology (Packaged Commodities) Rules, 2011",
+    "source_section": "Rule 6(1)(a)",
+    "effective_date": "2011-03-01",
+    "exceptions": [],
+    "notes": "Generic name must be prominently displayed on the principal display panel."
+  },
+  {
+    "rule_id": "LM-NQ-001",
+    "rule_version": "2026.01",
+    "rule_title": "Net Quantity Declaration",
+    "field": "net_quantity",
+    "applicability": {
+      "package_type": "prepackaged_commodity",
+      "categories": ["all"]
+    },
+    "requirement": "Every package shall declare the net quantity in terms of standard unit of weight, measure, or number.",
+    "validation_method": "metric_unit_format_check",
+    "severity": "CRITICAL",
+    "source_document": "Legal Metrology (Packaged Commodities) Rules, 2011",
+    "source_section": "Rule 6(1)(b)",
+    "effective_date": "2011-03-01",
+    "exceptions": ["small_packages_under_10g_or_10ml"],
+    "notes": "Units must be standard metric units (g, kg, ml, L)."
+  },
+  {
+    "rule_id": "LM-DATE-001",
+    "rule_version": "2026.01",
+    "rule_title": "Month and Year of Manufacture / Packing",
+    "field": "manufacturing_date",
+    "applicability": {
+      "package_type": "prepackaged_commodity",
+      "categories": ["all"]
+    },
+    "requirement": "Every package shall state the month and year in which the commodity is manufactured or packed.",
+    "validation_method": "date_format_check",
+    "severity": "HIGH",
+    "source_document": "Legal Metrology (Packaged Commodities) Rules, 2011",
+    "source_section": "Rule 6(1)(d)",
+    "effective_date": "2011-03-01",
+    "exceptions": ["bidi_and_incense_sticks"],
+    "notes": "Format should specify month and year explicitly e.g. MM/YYYY."
+  },
+  {
+    "rule_id": "LM-MRP-001",
+    "rule_version": "2026.01",
+    "rule_title": "Maximum Retail Price (MRP) Declaration",
+    "field": "mrp",
+    "applicability": {
+      "package_type": "prepackaged_commodity",
+      "categories": ["all"]
+    },
+    "requirement": "Declaration of Maximum Retail Price (MRP) inclusive of all taxes.",
+    "validation_method": "pattern_and_tax_phrase_check",
+    "severity": "CRITICAL",
+    "source_document": "Legal Metrology (Packaged Commodities) Rules, 2011",
+    "source_section": "Rule 6(1)(e)",
+    "effective_date": "2011-03-01",
+    "exceptions": [],
+    "notes": "Must state MRP clearly and include tax inclusion statement."
+  },
+  {
+    "rule_id": "LM-MFG-001",
+    "rule_version": "2026.01",
+    "rule_title": "Manufacturer / Packer / Importer Name & Address",
+    "field": "manufacturer",
+    "applicability": {
+      "package_type": "prepackaged_commodity",
+      "categories": ["all"]
+    },
+    "requirement": "Name and complete postal address of the manufacturer, packer, or importer shall be declared on every package.",
+    "validation_method": "entity_name_and_address_check",
+    "severity": "HIGH",
+    "source_document": "Legal Metrology (Packaged Commodities) Rules, 2011",
+    "source_section": "Rule 6(1)(a)",
+    "effective_date": "2011-03-01",
+    "exceptions": [],
+    "notes": "Must include name of manufacturer/packer and postal address."
+  },
+  {
+    "rule_id": "LM-CC-001",
+    "rule_version": "2026.01",
+    "rule_title": "Consumer Care Details Declaration",
+    "field": "consumer_care",
+    "applicability": {
+      "package_type": "prepackaged_commodity",
+      "categories": ["all"]
+    },
+    "requirement": "Name, address, telephone number, or email of the person or office who can be contacted in case of consumer complaints.",
+    "validation_method": "contact_details_check",
+    "severity": "HIGH",
+    "source_document": "Legal Metrology (Packaged Commodities) Rules, 2011",
+    "source_section": "Rule 6(2)",
+    "effective_date": "2011-03-01",
+    "exceptions": [],
+    "notes": "Must provide at least one contact channel (phone/email/address)."
+  },
+  {
+    "rule_id": "LM-COO-001",
+    "rule_version": "2026.01",
+    "rule_title": "Country of Origin Declaration for Imported Commodities",
+    "field": "country_of_origin",
+    "applicability": {
+      "package_type": "imported_commodity",
+      "categories": ["imported"]
+    },
+    "requirement": "Every imported package shall declare the country of origin on the label.",
+    "validation_method": "country_name_check",
+    "severity": "MEDIUM",
+    "source_document": "Legal Metrology (Packaged Commodities) Amendment Rules, 2017",
+    "source_section": "Rule 6(1)(n)",
+    "effective_date": "2017-06-23",
+    "exceptions": ["domestically_manufactured_commodities"],
+    "notes": "Applies when commodity is imported into India."
+  }
+]

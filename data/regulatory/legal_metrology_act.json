@@ -1,0 +1,92 @@
+[
+  {
+    "id": "LMA-2009-SEC-18",
+    "act_or_rule": "Legal Metrology Act, 2009",
+    "section_number": "Section 18",
+    "title": "Declarations on Pre-packaged Commodities",
+    "text": "No person shall manufacture, pack, sell, import, distribute, deliver, offer, expose or possess for sale any pre-packaged commodity unless such package is in such standard quantity or number and bears thereon such declarations and information in such manner as may be prescribed.",
+    "keywords": ["pre-packaged", "commodity", "declarations", "standard quantity", "manufacture", "pack", "sell", "import"],
+    "summary": "Mandates that all pre-packaged commodities sold in India must display mandatory statutory declarations."
+  },
+  {
+    "id": "LMR-2011-RULE-6-1-A",
+    "act_or_rule": "Legal Metrology (Packaged Commodities) Rules, 2011",
+    "section_number": "Rule 6(1)(a)",
+    "title": "Manufacturer and Packer Name & Address",
+    "text": "Every package shall bear the name and complete address of the manufacturer, or where the manufacturer is not the packer, the name and address of the manufacturer and packer, or in case of imported packages, the name and address of the importer.",
+    "keywords": ["manufacturer", "packer", "importer", "address", "name", "identity"],
+    "summary": "Requires full contact name and address of manufacturer, packer, or importer on every package."
+  },
+  {
+    "id": "LMR-2011-RULE-6-1-B",
+    "act_or_rule": "Legal Metrology (Packaged Commodities) Rules, 2011",
+    "section_number": "Rule 6(1)(b)",
+    "title": "Generic/Common Name of Commodity",
+    "text": "Every package shall contain the common or generic name of the commodity contained in the package, clearly displayed on the principal display panel.",
+    "keywords": ["generic name", "common name", "commodity name", "product name", "display panel"],
+    "summary": "Mandates generic or common name of the product to be declared on the main packaging panel."
+  },
+  {
+    "id": "LMR-2011-RULE-6-1-C",
+    "act_or_rule": "Legal Metrology (Packaged Commodities) Rules, 2011",
+    "section_number": "Rule 6(1)(c)",
+    "title": "Net Quantity Declaration",
+    "text": "The net quantity, in terms of standard unit of weight or measure (grams, kilograms, milliliters, liters) or number, shall be declared on every package. Standard units must follow metric standard conventions (g, kg, ml, l, L).",
+    "keywords": ["net quantity", "weight", "volume", "grams", "kilograms", "milliliters", "liters", "metric", "unit"],
+    "summary": "Requires net content weight or volume in standard metric units (g, kg, ml, L)."
+  },
+  {
+    "id": "LMR-2011-RULE-6-1-D",
+    "act_or_rule": "Legal Metrology (Packaged Commodities) Rules, 2011",
+    "section_number": "Rule 6(1)(d)",
+    "title": "Date of Manufacture / Packing / Import",
+    "text": "The month and year in which the commodity is manufactured or packed or imported shall be given on the package in the format MM/YYYY or Month Year.",
+    "keywords": ["date of manufacture", "mfg date", "packed date", "import date", "month", "year", "expiry"],
+    "summary": "Requires month and year of manufacturing, packing, or importing."
+  },
+  {
+    "id": "LMR-2011-RULE-6-1-E",
+    "act_or_rule": "Legal Metrology (Packaged Commodities) Rules, 2011",
+    "section_number": "Rule 6(1)(e)",
+    "title": "Maximum Retail Price (MRP) Declaration",
+    "text": "The retail sale price of the package shall be clearly stated in Indian Rupees as Maximum Retail Price (MRP) Rs. XX.XX or ₹ XX.XX (inclusive of all taxes). No seller can charge higher than the declared MRP.",
+    "keywords": ["mrp", "maximum retail price", "price", "inclusive of all taxes", "rupees", "tax"],
+    "summary": "Mandates clear display of Maximum Retail Price (MRP) in ₹ inclusive of all taxes."
+  },
+  {
+    "id": "LMR-2011-RULE-6-1-F",
+    "act_or_rule": "Legal Metrology (Packaged Commodities) Rules, 2011",
+    "section_number": "Rule 6(1)(f)",
+    "title": "Consumer Care Details",
+    "text": "Every package shall bear the name, address, telephone number, and e-mail address (if available) of the person who or the office which can be contacted in case of consumer complaints.",
+    "keywords": ["consumer care", "customer support", "helpline", "phone", "email", "address", "complaints"],
+    "summary": "Mandates customer care contact details including name/office, phone number, and email."
+  },
+  {
+    "id": "LMR-2011-RULE-6-10",
+    "act_or_rule": "Legal Metrology (Packaged Commodities) Rules, 2011",
+    "section_number": "Rule 6(10)",
+    "title": "Country of Origin Declaration",
+    "text": "Every package shall bear the name of the country of origin or manufacture or assembly on the package where the commodity is imported.",
+    "keywords": ["country of origin", "made in", "origin", "imported", "manufactured in"],
+    "summary": "Mandates explicit declaration of Country of Origin for all manufactured and imported commodities."
+  },
+  {
+    "id": "LMR-2011-RULE-9",
+    "act_or_rule": "Legal Metrology (Packaged Commodities) Rules, 2011",
+    "section_number": "Rule 9",
+    "title": "Manner in which Declarations shall be Made",
+    "text": "All declarations specified under these rules shall be legible, prominent, definite, and plain. The background and color of letters must contrast sharply with the background of the package to ensure high visibility.",
+    "keywords": ["legibility", "contrast", "visibility", "prominent", "font size", "declarations manner"],
+    "summary": "Mandates legibility, high color contrast, and clear visibility for all packaging declarations."
+  },
+  {
+    "id": "LMA-2009-SEC-36",
+    "act_or_rule": "Legal Metrology Act, 2009",
+    "section_number": "Section 36",
+    "title": "Penalty for Selling Non-Standard Packages",
+    "text": "Whoever manufactures, packs, imports, sells, or distributes any pre-packaged commodity which does not conform to the declarations on the package shall be punished with a fine which may extend to twenty-five thousand rupees, and for second or subsequent offense, with fine up to fifty thousand rupees or imprisonment up to one year.",
+    "keywords": ["penalty", "fine", "non-compliance", "offense", "imprisonment", "enforcement", "violation"],
+    "summary": "Outlines fines up to ₹25,000 for first offense and up to ₹50,000 / 1 year imprisonment for repeat offenses."
+  }
+]
