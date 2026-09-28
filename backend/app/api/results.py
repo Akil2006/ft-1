@@ -37,6 +37,8 @@ def trigger_compliance_checks(
     missing_cnt = sum(1 for c in checks if c.result == "MISSING_INFORMATION")
     na_cnt = sum(1 for c in checks if c.result == "NOT_APPLICABLE")
 
+    missing_fields_list = [c.field_name for c in checks if c.applicable and c.result in ("MISSING_INFORMATION", "REVIEW_REQUIRED")]
+
     return InspectionComplianceResultSchema(
         inspection_id=inspection_id,
         overall_result=inspection.overall_result or "REVIEW_REQUIRED",
@@ -45,6 +47,12 @@ def trigger_compliance_checks(
         review_required_count=review_cnt,
         missing_info_count=missing_cnt,
         not_applicable_count=na_cnt,
+        completeness_score=inspection.completeness_score,
+        expected_fields_count=inspection.expected_fields_count,
+        detected_fields_count=inspection.detected_fields_count,
+        missing_fields=missing_fields_list,
+        integrity_hash=inspection.integrity_hash,
+        hash_algorithm=inspection.hash_algorithm or "SHA-256",
         checks=[ComplianceCheckResponse.model_validate(c) for c in checks]
     )
 
@@ -75,6 +83,8 @@ def get_compliance_results(
     missing_cnt = sum(1 for c in checks if c.result == "MISSING_INFORMATION")
     na_cnt = sum(1 for c in checks if c.result == "NOT_APPLICABLE")
 
+    missing_fields_list = [c.field_name for c in checks if c.applicable and c.result in ("MISSING_INFORMATION", "REVIEW_REQUIRED")]
+
     return InspectionComplianceResultSchema(
         inspection_id=inspection_id,
         overall_result=inspection.overall_result or "REVIEW_REQUIRED",
@@ -83,5 +93,11 @@ def get_compliance_results(
         review_required_count=review_cnt,
         missing_info_count=missing_cnt,
         not_applicable_count=na_cnt,
+        completeness_score=inspection.completeness_score,
+        expected_fields_count=inspection.expected_fields_count,
+        detected_fields_count=inspection.detected_fields_count,
+        missing_fields=missing_fields_list,
+        integrity_hash=inspection.integrity_hash,
+        hash_algorithm=inspection.hash_algorithm or "SHA-256",
         checks=[ComplianceCheckResponse.model_validate(c) for c in checks]
     )

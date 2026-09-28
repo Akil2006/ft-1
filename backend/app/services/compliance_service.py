@@ -84,9 +84,31 @@ class ComplianceService:
         else:
             overall = "NOT_APPLICABLE"
 
+        # Feature 2: Compute Declaration Completeness Score
+        # Applicable expected fields exclude NOT_APPLICABLE rules
+        applicable_checks = [c for c in created_checks if c.applicable and c.result != "NOT_APPLICABLE"]
+        expected_cnt = len(applicable_checks)
+        detected_cnt = sum(1 for c in applicable_checks if c.result == "COMPLIANT")
+
+        if expected_cnt > 0:
+            completeness = round((detected_cnt / expected_cnt) * 100.0, 2)
+        else:
+            completeness = None
+
         inspection.overall_result = overall
         inspection.status = "COMPLETED"
+        inspection.completeness_score = completeness
+        inspection.expected_fields_count = expected_cnt
+        inspection.detected_fields_count = detected_cnt
+
         db.commit()
+
+        # Feature 4: Generate SHA-256 Tamper-Evident Integrity Hash for completed inspection
+        try:
+            from app.services.integrity_service import integrity_service
+            integrity_service.finalize_inspection(db, inspection_id)
+        except Exception:
+            pass
 
         for c in created_checks:
             db.refresh(c)

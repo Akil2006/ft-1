@@ -160,6 +160,109 @@ export const InspectionDetailsPage: React.FC = () => {
         </div>
       </div>
 
+      {/* FEATURE 2: Declaration Completeness Score Card */}
+      <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+          <div>
+            <h3 className="text-lg font-bold text-white flex items-center gap-2">
+              <span className="text-sky-400 font-mono">📊</span>
+              Declaration Completeness Score
+            </h3>
+            <p className="text-xs text-slate-400 mt-1">
+              Measures detected applicable declarations; it is not a legal compliance score.
+            </p>
+          </div>
+          {compliance?.completeness_score !== undefined && compliance?.completeness_score !== null && (
+            <div className="flex items-baseline gap-2 bg-slate-800/80 px-4 py-2 rounded-xl border border-slate-700/80">
+              <span className="text-3xl font-extrabold text-sky-400">
+                {compliance.completeness_score.toFixed(1)}%
+              </span>
+              <span className="text-xs text-slate-400 font-mono">
+                ({compliance.detected_fields_count} / {compliance.expected_fields_count} detected)
+              </span>
+            </div>
+          )}
+        </div>
+
+        {/* Detected vs Missing List */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="bg-emerald-950/20 border border-emerald-500/20 rounded-lg p-4 space-y-2">
+            <span className="text-xs font-bold text-emerald-400 uppercase tracking-wider block">
+              ✓ Detected Declarations
+            </span>
+            <ul className="space-y-1 text-xs text-slate-300">
+              {fields.map((f) => (
+                <li key={f.id} className="flex items-center gap-2">
+                  <span className="text-emerald-400">✓</span>
+                  <span className="font-semibold capitalize">{f.field_name.replace('_', ' ')}</span>
+                  <span className="text-slate-500 font-mono text-[10px]">({f.raw_value})</span>
+                </li>
+              ))}
+              {fields.length === 0 && <li className="text-slate-500 italic">No declarations detected.</li>}
+            </ul>
+          </div>
+
+          <div className="bg-rose-950/20 border border-rose-500/20 rounded-lg p-4 space-y-2">
+            <span className="text-xs font-bold text-rose-400 uppercase tracking-wider block">
+              ⚠ Missing / Unverified Declarations
+            </span>
+            <ul className="space-y-1 text-xs text-slate-300">
+              {compliance?.missing_fields?.map((mf, idx) => (
+                <li key={idx} className="flex items-center gap-2 text-rose-300">
+                  <span>⚠</span>
+                  <span className="font-semibold capitalize">{mf.replace('_', ' ')}</span>
+                </li>
+              ))}
+              {(!compliance?.missing_fields || compliance.missing_fields.length === 0) && (
+                <li className="text-emerald-400 text-xs">All expected declarations successfully detected!</li>
+              )}
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      {/* FEATURE 4: Tamper-Evident Inspection Hash Card */}
+      <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h3 className="text-lg font-bold text-white flex items-center gap-2">
+              <span className="text-emerald-400 font-mono">🔒</span>
+              Tamper-Evident Inspection Record Integrity
+            </h3>
+            <p className="text-xs text-slate-400 mt-1">
+              SHA-256 digital fingerprint ensuring finalized inspection record data has not been altered.
+            </p>
+          </div>
+          <button
+            onClick={async () => {
+              if (!id) return;
+              try {
+                const ver = await inspectionApi.verifyIntegrity(id);
+                alert(`${ver.valid ? '✓' : '⚠'} ${ver.message}\nAlgorithm: ${ver.algorithm}`);
+              } catch (e) {
+                alert('Failed to verify record integrity.');
+              }
+            }}
+            className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-lg shadow-md shadow-emerald-600/20 transition-colors flex items-center gap-2 self-start"
+          >
+            <span>Verify Integrity</span>
+          </button>
+        </div>
+
+        <div className="bg-slate-950 border border-slate-800 rounded-lg p-4 font-mono text-xs space-y-2">
+          <div className="flex justify-between items-center border-b border-slate-800/80 pb-2">
+            <span className="text-slate-400">Algorithm:</span>
+            <span className="text-emerald-400 font-bold">{compliance?.hash_algorithm || 'SHA-256'}</span>
+          </div>
+          <div className="flex justify-between items-center pt-1">
+            <span className="text-slate-400 shrink-0">SHA-256 Hash:</span>
+            <span className="text-slate-200 truncate ml-4 font-bold text-[11px]">
+              {compliance?.integrity_hash || 'Unfinalized / Pending Hash'}
+            </span>
+          </div>
+        </div>
+      </div>
+
       {/* Interactive Evidence ROI Viewer */}
       {primaryImage && (
         <EvidenceViewer

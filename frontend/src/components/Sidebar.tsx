@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 import {
   LayoutDashboard,
   PlusCircle,
+  Layers,
   History,
   BarChart3,
   BookOpen,
@@ -21,6 +22,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ userRole }) => {
   const inspectorNavItems = [
     { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { to: '/inspections/new', label: 'New Inspection', icon: PlusCircle },
+    { to: '/inspections/batch', label: 'Batch Inspection', icon: Layers },
     { to: '/inspections', label: 'Inspection History', icon: History },
     { to: '/analytics', label: 'Analytics', icon: BarChart3 },
     { to: '/regulatory', label: 'Regulatory Assistant', icon: BookOpen },

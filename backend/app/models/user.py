@@ -23,3 +23,4 @@ class User(Base):
     updated_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc), nullable=False)
 
     inspections = relationship("Inspection", back_populates="user", cascade="all, delete-orphan")
+    batches = relationship("InspectionBatch", back_populates="user", cascade="all, delete-orphan")

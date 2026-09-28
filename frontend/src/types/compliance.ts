@@ -42,5 +42,11 @@ export interface InspectionComplianceResult {
   review_required_count: number;
   missing_info_count: number;
   not_applicable_count: number;
+  completeness_score?: number;
+  expected_fields_count?: number;
+  detected_fields_count?: number;
+  missing_fields?: string[];
+  integrity_hash?: string;
+  hash_algorithm?: string;
   checks: ComplianceCheck[];
 }

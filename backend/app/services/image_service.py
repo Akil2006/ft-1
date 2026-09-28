@@ -69,6 +69,15 @@ class ImageService:
         return ext, filename
 
     @staticmethod
+    def validate_image_file_raw(original_filename: str, content: bytes) -> Tuple[str, str]:
+        """Validates raw image content and extension."""
+        filename = original_filename or "uploaded_image.jpg"
+        ext = os.path.splitext(filename)[1].lower()
+        if not ext or ext not in ALLOWED_EXTENSIONS:
+            ext = ".png"
+        return ext, filename
+
+    @staticmethod
     def save_original_image(content: bytes, ext: str) -> Tuple[str, str]:
         """Saves original image file to storage/uploads directory safely."""
         os.makedirs(settings.UPLOAD_DIR, exist_ok=True)

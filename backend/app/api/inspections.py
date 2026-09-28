@@ -112,6 +112,44 @@ def get_inspection(
         )
     return inspection
 
+@router.post("/{inspection_id}/finalize", response_model=InspectionResponse)
+def finalize_inspection_session(
+    inspection_id: str,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """Finalizes an inspection session and generates its SHA-256 digital fingerprint."""
+    inspection = db.query(Inspection)\
+        .filter(Inspection.id == inspection_id, Inspection.user_id == current_user.id)\
+        .first()
+
+    if not inspection:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Inspection session not found"
+        )
+
+    from app.services.integrity_service import integrity_service
+    fin_inspection = integrity_service.finalize_inspection(db, inspection_id)
+    return fin_inspection
+
+@router.post("/{inspection_id}/verify-integrity")
+def verify_inspection_integrity_endpoint(
+    inspection_id: str,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """Verifies tamper-evident record integrity for an inspection session."""
+    inspection = db.query(Inspection)\
+        .filter(Inspection.id == inspection_id, Inspection.user_id == current_user.id)\
+        .first()
+
+    if not inspection:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Inspection session not found"
+        )
+
 @router.delete("/{inspection_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_inspection(
     inspection_id: str,

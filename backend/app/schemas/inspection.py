@@ -23,11 +23,18 @@ class InspectionImageResponse(BaseModel):
 class InspectionResponse(BaseModel):
     id: str
     user_id: str
+    batch_id: Optional[str] = None
     product_name: Optional[str] = None
     category: Optional[str] = None
     package_type: Optional[str] = None
     status: str
     overall_result: Optional[str] = None
+    completeness_score: Optional[float] = None
+    expected_fields_count: Optional[int] = None
+    detected_fields_count: Optional[int] = None
+    integrity_hash: Optional[str] = None
+    hash_algorithm: Optional[str] = None
+    hash_generated_at: Optional[datetime] = None
     created_at: datetime
     updated_at: datetime
     images: List[InspectionImageResponse] = []

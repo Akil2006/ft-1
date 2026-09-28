@@ -6,7 +6,7 @@ import os
 from app.config import settings
 from app.database import engine, Base
 import app.models  # Ensure models are imported so Base metadata is populated
-from app.api import auth, inspections, images, ocr, extraction, rules, results, evidence, analytics, reports, regulatory, admin
+from app.api import auth, inspections, batches, images, ocr, extraction, rules, results, evidence, analytics, reports, regulatory, admin
 
 # Initialize Database Tables
 Base.metadata.create_all(bind=engine)
@@ -34,6 +34,7 @@ app.mount("/storage", StaticFiles(directory="storage"), name="storage")
 # Routers
 app.include_router(auth.router, prefix=settings.API_V1_STR)
 app.include_router(inspections.router, prefix=settings.API_V1_STR)
+app.include_router(batches.router, prefix=settings.API_V1_STR)
 app.include_router(images.router, prefix=settings.API_V1_STR)
 app.include_router(ocr.router, prefix=settings.API_V1_STR)
 app.include_router(extraction.router, prefix=settings.API_V1_STR)

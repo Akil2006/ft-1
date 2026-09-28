@@ -44,4 +44,10 @@ class InspectionComplianceResultSchema(BaseModel):
     review_required_count: int
     missing_info_count: int
     not_applicable_count: int
+    completeness_score: Optional[float] = None
+    expected_fields_count: Optional[int] = None
+    detected_fields_count: Optional[int] = None
+    missing_fields: List[str] = []
+    integrity_hash: Optional[str] = None
+    hash_algorithm: Optional[str] = None
     checks: List[ComplianceCheckResponse]

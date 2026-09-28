@@ -1,5 +1,6 @@
 from app.models.user import User, UserRole
 from app.models.inspection import Inspection
+from app.models.batch import InspectionBatch
 from app.models.image import InspectionImage
 from app.models.extracted_field import ExtractedField
 from app.models.evidence import Evidence
@@ -10,6 +11,7 @@ __all__ = [
     "User",
     "UserRole",
     "Inspection",
+    "InspectionBatch",
     "InspectionImage",
     "ExtractedField",
     "Evidence",

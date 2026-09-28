@@ -34,3 +34,25 @@ def setup_test_db():
     yield
     Base.metadata.drop_all(bind=test_engine)
     app.dependency_overrides.clear()
+
+@pytest.fixture
+def db():
+    database = TestingSessionLocal()
+    try:
+        yield database
+    finally:
+        database.close()
+
+@pytest.fixture
+def test_user(db):
+    from app.models.user import User, UserRole
+    user = User(
+        name="Test Inspector",
+        email="test_inspector@smartpack.local",
+        password_hash="testpass123",
+        role=UserRole.USER
+    )
+    db.add(user)
+    db.commit()
+    db.refresh(user)
+    return user

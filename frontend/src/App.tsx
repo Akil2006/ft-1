@@ -6,6 +6,7 @@ import { LoginPage } from './pages/LoginPage';
 import { RegisterPage } from './pages/RegisterPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { NewInspectionPage } from './pages/NewInspectionPage';
+import { BatchInspectionPage } from './pages/BatchInspectionPage';
 import { InspectionDetailsPage } from './pages/InspectionDetailsPage';
 import { InspectionHistoryPage } from './pages/InspectionHistoryPage';
 import { AnalyticsPage } from './pages/AnalyticsPage';
@@ -102,6 +103,18 @@ export default function App() {
             user ? (
               <Layout user={user} onLogout={() => setUser(null)} showSidebar={true}>
                 <NewInspectionPage />
+              </Layout>
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          }
+        />
+        <Route
+          path="/inspections/batch"
+          element={
+            user ? (
+              <Layout user={user} onLogout={() => setUser(null)} showSidebar={true}>
+                <BatchInspectionPage />
               </Layout>
             ) : (
               <Navigate to="/login" replace />

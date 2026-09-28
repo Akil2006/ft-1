@@ -30,11 +30,18 @@ export interface InspectionImage {
 export interface Inspection {
   id: string;
   user_id: string;
+  batch_id?: string;
   product_name?: string;
   category?: string;
   package_type?: string;
   status: InspectionStatus;
   overall_result?: OverallResult;
+  completeness_score?: number;
+  expected_fields_count?: number;
+  detected_fields_count?: number;
+  integrity_hash?: string;
+  hash_algorithm?: string;
+  hash_generated_at?: string;
   created_at: string;
   updated_at: string;
   images: InspectionImage[];

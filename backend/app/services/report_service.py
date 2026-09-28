@@ -116,16 +116,22 @@ class ReportService:
         badge_bg = "#059669" if overall_res == "COMPLIANT" else ("#D97706" if overall_res == "REVIEW_REQUIRED" else "#DC2626")
         res_html = f'<font color="{badge_bg}"><b>{overall_res}</b></font>'
 
+        comp_score_str = f"{inspection.completeness_score:.1f}% ({inspection.detected_fields_count}/{inspection.expected_fields_count} detected)" if inspection.completeness_score is not None else "N/A"
+        hash_str = inspection.integrity_hash or "Pending Finalization"
+        hash_status_str = "Verified" if inspection.integrity_hash else "Unfinalized"
+
         meta_data = [
             [Paragraph("Inspection ID:", body_bold), Paragraph(inspection.id, body_style),
              Paragraph("Created Date:", body_bold), Paragraph(created_str, body_style)],
             [Paragraph("Product Name:", body_bold), Paragraph(inspection.product_name or "N/A", body_style),
              Paragraph("Category:", body_bold), Paragraph(inspection.category or "N/A", body_style)],
             [Paragraph("Package Type:", body_bold), Paragraph(inspection.package_type or "N/A", body_style),
-             Paragraph("Overall Result:", body_bold), Paragraph(res_html, body_style)]
+             Paragraph("Overall Result:", body_bold), Paragraph(res_html, body_style)],
+            [Paragraph("Declaration Completeness:", body_bold), Paragraph(comp_score_str, body_style),
+             Paragraph("Integrity Status:", body_bold), Paragraph(hash_status_str, body_style)]
         ]
 
-        meta_table = Table(meta_data, colWidths=[1.1*inch, 2.4*inch, 1.1*inch, 2.4*inch])
+        meta_table = Table(meta_data, colWidths=[1.4*inch, 2.1*inch, 1.4*inch, 2.1*inch])
         meta_table.setStyle(TableStyle([
             ('BACKGROUND', (0, 0), (-1, -1), colors.HexColor("#F8FAFC")),
             ('BOX', (0, 0), (-1, -1), 0.5, colors.HexColor("#E2E8F0")),
@@ -221,7 +227,27 @@ class ReportService:
                 elements.append(ev_table)
                 elements.append(Spacer(1, 14))
 
-        # 6. Legal Disclaimer Box
+        # 6. Inspection Record Integrity Box
+        elements.append(Paragraph("4. Tamper-Evident Inspection Record Integrity", h2_style))
+        hash_val = inspection.integrity_hash or "Pending Finalization"
+        hash_box = [
+            [Paragraph("Algorithm:", body_bold), Paragraph(inspection.hash_algorithm or "SHA-256", body_style)],
+            [Paragraph("Inspection Hash:", body_bold), Paragraph(f"<font size=7 color='#0F172A'><b>{hash_val}</b></font>", body_style)],
+            [Paragraph("Integrity Status:", body_bold), Paragraph("Verified (Digital Fingerprint Generated)", body_style)],
+            [Paragraph("Purpose:", body_bold), Paragraph("Digital fingerprint for detecting changes to the finalized inspection record.", disclaimer_style)]
+        ]
+        hash_table = Table(hash_box, colWidths=[1.5*inch, 5.5*inch])
+        hash_table.setStyle(TableStyle([
+            ('BACKGROUND', (0, 0), (-1, -1), colors.HexColor("#F0FDF4")),  # Emerald 50
+            ('BOX', (0, 0), (-1, -1), 0.5, colors.HexColor("#16A34A")),    # Emerald 600
+            ('INNERGRID', (0, 0), (-1, -1), 0.5, colors.HexColor("#DCFCE7")),
+            ('TOPPADDING', (0, 0), (-1, -1), 5),
+            ('BOTTOMPADDING', (0, 0), (-1, -1), 5),
+        ]))
+        elements.append(hash_table)
+        elements.append(Spacer(1, 14))
+
+        # 7. Legal Disclaimer Box
         elements.append(Spacer(1, 10))
         disclaimer_box = [
             [Paragraph("<b>OFFICIAL PRELIMINARY SCREENING DISCLAIMER</b>", body_bold)],

@@ -57,4 +57,20 @@ export const inspectionApi = {
     const response = await apiClient.get<InspectionImage[]>(`/inspections/${inspectionId}/images`);
     return response.data;
   },
+
+  async finalizeInspection(inspectionId: string): Promise<Inspection> {
+    const response = await apiClient.post<Inspection>(`/inspections/${inspectionId}/finalize`);
+    return response.data;
+  },
+
+  async verifyIntegrity(inspectionId: string): Promise<{
+    valid: boolean;
+    algorithm: string;
+    stored_hash?: string;
+    calculated_hash?: string;
+    message: string;
+  }> {
+    const response = await apiClient.post(`/inspections/${inspectionId}/verify-integrity`);
+    return response.data;
+  },
 };
