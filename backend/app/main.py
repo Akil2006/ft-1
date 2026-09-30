@@ -4,12 +4,13 @@ from fastapi.staticfiles import StaticFiles
 import os
 
 from app.config import settings
-from app.database import engine, Base
+from app.database import engine, Base, auto_migrate_schema
 import app.models  # Ensure models are imported so Base metadata is populated
 from app.api import auth, inspections, batches, images, ocr, extraction, rules, results, evidence, analytics, reports, regulatory, admin
 
-# Initialize Database Tables
+# Initialize Database Tables & Schema Migrations
 Base.metadata.create_all(bind=engine)
+auto_migrate_schema()
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
