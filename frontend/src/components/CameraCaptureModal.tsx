@@ -137,17 +137,17 @@ export const CameraCaptureModal: React.FC<CameraCaptureModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl max-w-xl w-full p-6 space-y-5 shadow-2xl relative">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
+      <div className="bg-white border border-sand-300 rounded-2xl max-w-xl w-full p-6 space-y-5 shadow-2xl relative">
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-slate-800 pb-4">
-          <div className="flex items-center space-x-2 text-white">
-            <Camera className="w-5 h-5 text-blue-400" />
-            <h3 className="text-lg font-bold">Capture Package Image</h3>
+        <div className="flex items-center justify-between border-b border-sand-200 pb-4">
+          <div className="flex items-center space-x-2 text-slate-900">
+            <Camera className="w-5 h-5 text-forest-700" />
+            <h3 className="font-serif text-lg font-bold">Capture Package Image</h3>
           </div>
           <button
             onClick={handleClose}
-            className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition-colors"
+            className="text-slate-400 hover:text-slate-700 p-1 rounded-lg hover:bg-sand-100 transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -157,14 +157,14 @@ export const CameraCaptureModal: React.FC<CameraCaptureModalProps> = ({
         <canvas ref={canvasRef} className="hidden" />
 
         {/* Main View Area */}
-        <div className="relative bg-black rounded-xl overflow-hidden aspect-video border border-slate-800 flex items-center justify-center">
+        <div className="relative bg-slate-950 rounded-xl overflow-hidden aspect-video border border-sand-300 flex items-center justify-center shadow-inner">
           {error ? (
             <div className="p-6 text-center space-y-3">
               <VideoOff className="w-10 h-10 text-rose-500 mx-auto" />
-              <p className="text-xs text-rose-300 font-medium">{error}</p>
+              <p className="text-xs text-rose-300 font-medium font-sans">{error}</p>
               <button
                 onClick={startCamera}
-                className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-lg border border-slate-700"
+                className="px-4 py-2 bg-sand-200 hover:bg-sand-300 text-slate-800 text-xs font-semibold rounded-lg border border-sand-300"
               >
                 Retry Camera Connection
               </button>
@@ -176,7 +176,7 @@ export const CameraCaptureModal: React.FC<CameraCaptureModalProps> = ({
             /* Live Camera Stream */
             <>
               {cameraLoading && (
-                <div className="absolute inset-0 flex items-center justify-center bg-black/70 text-slate-400 text-xs">
+                <div className="absolute inset-0 flex items-center justify-center bg-black/70 text-slate-300 text-xs font-sans">
                   Connecting to camera stream...
                 </div>
               )}
@@ -195,7 +195,7 @@ export const CameraCaptureModal: React.FC<CameraCaptureModalProps> = ({
         <div className="flex items-center justify-between pt-2">
           <button
             onClick={handleClose}
-            className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold rounded-lg border border-slate-700 transition-colors"
+            className="px-4 py-2 bg-sand-200 hover:bg-sand-300 text-slate-700 text-xs font-semibold rounded-lg border border-sand-300 transition-colors"
           >
             Cancel
           </button>
@@ -205,14 +205,14 @@ export const CameraCaptureModal: React.FC<CameraCaptureModalProps> = ({
               <>
                 <button
                   onClick={handleRetake}
-                  className="flex items-center space-x-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-lg border border-slate-700 transition-colors"
+                  className="flex items-center space-x-2 px-4 py-2 bg-sand-200 hover:bg-sand-300 text-slate-800 text-xs font-semibold rounded-lg border border-sand-300 transition-colors"
                 >
                   <RefreshCw className="w-4 h-4" />
                   <span>Retake</span>
                 </button>
                 <button
                   onClick={handleConfirm}
-                  className="flex items-center space-x-2 px-5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-lg shadow-lg shadow-emerald-600/30 transition-colors"
+                  className="flex items-center space-x-2 px-5 py-2 bg-forest-800 hover:bg-forest-900 text-white text-xs font-bold rounded-lg shadow-sm transition-colors"
                 >
                   <Check className="w-4 h-4" />
                   <span>Use Captured Photo</span>
@@ -222,7 +222,7 @@ export const CameraCaptureModal: React.FC<CameraCaptureModalProps> = ({
               <button
                 onClick={handleCapture}
                 disabled={!!error || cameraLoading}
-                className="flex items-center space-x-2 px-6 py-2.5 bg-blue-600 hover:bg-blue-500 disabled:opacity-40 text-white text-xs font-bold rounded-lg shadow-lg shadow-blue-600/30 transition-colors"
+                className="flex items-center space-x-2 px-6 py-2.5 bg-forest-800 hover:bg-forest-900 disabled:opacity-40 text-white text-xs font-bold rounded-lg shadow-sm transition-colors"
               >
                 <Camera className="w-4 h-4" />
                 <span>Capture Frame</span>
@@ -234,3 +234,4 @@ export const CameraCaptureModal: React.FC<CameraCaptureModalProps> = ({
     </div>
   );
 };
+

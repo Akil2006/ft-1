@@ -1,104 +1,141 @@
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import {
-  ShieldCheck,
   ScanText,
   Scale,
-  FileCheck,
-  Search,
   ArrowRight,
-  Sparkles,
-  FileText,
-  AlertTriangle,
+  BookOpen,
+  FileCheck2,
 } from 'lucide-react';
+import {
+  LegalRuleBooksIllustration,
+  PackageInspectionIllustration,
+  BotanicalLeafAccent,
+  FairTradeStamp,
+} from '../components/BrandingAssets';
 
 export const LandingPage: React.FC = () => {
   return (
-    <div className="space-y-16 py-8">
-      {/* Hero Section */}
-      <section className="text-center space-y-6 max-w-4xl mx-auto pt-6">
-        <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-blue-900/40 border border-blue-700/50 text-blue-300 text-xs font-medium">
-          <Sparkles className="w-4 h-4 text-blue-400" />
-          <span>Legal Metrology (Packaged Commodities) Rules, 2011 Automated Screening</span>
+    <div className="space-y-12 py-6">
+      {/* Editorial Hero Section */}
+      <section className="relative bg-gradient-to-b from-ivory-50 via-ivory-100 to-sage-50 rounded-3xl p-6 sm:p-10 lg:p-12 border border-sand-300/80 shadow-sm overflow-hidden">
+        {/* Background Botanical Overlay */}
+        <div className="absolute top-0 right-0 opacity-25 pointer-events-none transform translate-x-6 -translate-y-6">
+          <BotanicalLeafAccent className="w-64 h-64" />
         </div>
 
-        <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-white leading-tight">
-          AI-Powered Packaging Compliance & Legal Metrology Inspection System
-        </h1>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
+          {/* Left Hero Column */}
+          <div className="lg:col-span-7 space-y-6 text-left">
+            <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-forest-100/90 border border-forest-200 text-forest-800 text-xs font-semibold">
+              <Scale className="w-4 h-4 text-forest-600" />
+              <span>Legal Metrology (Packaged Commodities) Rules, 2011 Automated Screening</span>
+            </div>
 
-        <p className="text-lg text-slate-300 max-w-2xl mx-auto leading-relaxed">
-          Upload package images to run multi-engine OCR, extract statutory declarations, verify bounding-box evidence, and execute deterministic Legal Metrology screening rules.
-        </p>
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold font-serif text-slate-900 leading-[1.15] tracking-tight">
+              AI-Powered Packaging Compliance & Legal Metrology Inspection System
+            </h1>
 
-        <div className="flex items-center justify-center space-x-4 pt-4">
-          <RouterLink
-            to="/register"
-            className="flex items-center space-x-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold px-6 py-3 rounded-lg shadow-lg shadow-blue-600/30 transition-all text-base"
-          >
-            <span>Start Package Inspection</span>
-            <ArrowRight className="w-5 h-5" />
-          </RouterLink>
+            <p className="text-sm sm:text-base text-slate-700 leading-relaxed font-sans max-w-xl">
+              Upload package images to run multi-engine OCR, extract statutory declarations, verify bounding-box evidence, and execute deterministic Legal Metrology screening rules.
+            </p>
 
-          <RouterLink
-            to="/login"
-            className="flex items-center space-x-2 bg-slate-800 hover:bg-slate-700 text-slate-200 font-medium px-6 py-3 rounded-lg border border-slate-700 transition-all text-base"
-          >
-            <span>Inspector Login</span>
-          </RouterLink>
+            <div className="flex flex-wrap items-center gap-4 pt-2">
+              <RouterLink
+                to="/register"
+                className="flex items-center space-x-2 bg-forest-700 hover:bg-forest-600 text-white font-bold px-6 py-3.5 rounded-full shadow-md shadow-forest-900/20 transition-all hover:scale-[1.02] text-sm"
+              >
+                <span>Start Package Inspection</span>
+                <ArrowRight className="w-4 h-4" />
+              </RouterLink>
+
+              <RouterLink
+                to="/login"
+                className="flex items-center space-x-2 bg-white hover:bg-ivory-50 text-slate-800 font-semibold px-6 py-3.5 rounded-full border border-sand-300 shadow-xs transition-all text-sm"
+              >
+                <span>Inspector Login</span>
+              </RouterLink>
+            </div>
+
+            {/* Hand-annotated annotation */}
+            <div className="pt-3 flex items-center space-x-3 text-forest-800">
+              <span className="font-handwriting text-xl font-bold text-forest-700">
+                Scan Products. Check Declarations. Ensure Fair Markets.
+              </span>
+            </div>
+          </div>
+
+          {/* Right Hero Visual Column (Package + Magnifying Glass + Legal Books) */}
+          <div className="lg:col-span-5 flex flex-col items-center justify-center space-y-4">
+            <div className="relative w-full max-w-sm">
+              <PackageInspectionIllustration className="w-full shadow-lg" />
+              <div className="absolute -bottom-4 -left-4">
+                <FairTradeStamp className="w-20 h-20 shadow-xs" />
+              </div>
+            </div>
+
+            {/* Legal Books Banner */}
+            <div className="w-full max-w-sm pt-2">
+              <LegalRuleBooksIllustration className="w-full" />
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* Core Capabilities Grid */}
+      {/* 3 Core Capability Cards */}
       <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-3">
-          <div className="w-12 h-12 rounded-lg bg-blue-900/50 border border-blue-700/40 flex items-center justify-center text-blue-400">
+        <div className="bg-white rounded-2xl p-6 border border-sand-300 shadow-xs space-y-4 hover:shadow-md transition-shadow">
+          <div className="w-12 h-12 rounded-xl bg-forest-100 text-forest-700 flex items-center justify-center shadow-2xs">
             <ScanText className="w-6 h-6" />
           </div>
-          <h3 className="text-lg font-bold text-white">Multi-Engine OCR & ROI Evidence</h3>
-          <p className="text-sm text-slate-400 leading-relaxed">
+          <h3 className="text-lg font-bold font-sans text-slate-900">Multi-Engine OCR & ROI Evidence</h3>
+          <p className="text-xs text-slate-600 leading-relaxed">
             Extracts MRP, Net Quantity, Dates, Manufacturer details, and Country of Origin using fallback OCR engines with bounding box snippet crops.
           </p>
         </div>
 
-        <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-3">
-          <div className="w-12 h-12 rounded-lg bg-emerald-900/50 border border-emerald-700/40 flex items-center justify-center text-emerald-400">
+        <div className="bg-white rounded-2xl p-6 border border-sand-300 shadow-xs space-y-4 hover:shadow-md transition-shadow">
+          <div className="w-12 h-12 rounded-xl bg-forest-100 text-forest-700 flex items-center justify-center shadow-2xs">
             <Scale className="w-6 h-6" />
           </div>
-          <h3 className="text-lg font-bold text-white">Deterministic Rule Engine</h3>
-          <p className="text-sm text-slate-400 leading-relaxed">
+          <h3 className="text-lg font-bold font-sans text-slate-900">Deterministic Rule Engine</h3>
+          <p className="text-xs text-slate-600 leading-relaxed">
             Runs 100% grounded legal metrology checks without LLM hallucinations, ensuring accurate preliminary compliance classification.
           </p>
         </div>
 
-        <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-3">
-          <div className="w-12 h-12 rounded-lg bg-amber-900/50 border border-amber-700/40 flex items-center justify-center text-amber-400">
-            <FileText className="w-6 h-6" />
+        <div className="bg-white rounded-2xl p-6 border border-sand-300 shadow-xs space-y-4 hover:shadow-md transition-shadow">
+          <div className="w-12 h-12 rounded-xl bg-forest-100 text-forest-700 flex items-center justify-center shadow-2xs">
+            <FileCheck2 className="w-6 h-6" />
           </div>
-          <h3 className="text-lg font-bold text-white">ReportLab PDF Export</h3>
-          <p className="text-sm text-slate-400 leading-relaxed">
+          <h3 className="text-lg font-bold font-sans text-slate-900">ReportLab PDF Export</h3>
+          <p className="text-xs text-slate-600 leading-relaxed">
             Generates downloadable multi-page PDF inspection reports complete with evidence crops, statutory rule traces, and preliminary disclaimers.
           </p>
         </div>
       </section>
 
-      {/* Statutory Rules Reference Banner */}
-      <section className="bg-slate-900/80 border border-slate-800 rounded-xl p-8 flex flex-col md:flex-row items-center justify-between gap-6">
-        <div className="space-y-2">
-          <h3 className="text-xl font-bold text-white flex items-center gap-2">
-            <ShieldCheck className="w-6 h-6 text-blue-400" />
-            <span>Grounded Legal Metrology Regulatory Assistant</span>
+      {/* Grounded Regulatory Assistant CTA Section */}
+      <section className="bg-gradient-to-r from-forest-900 via-forest-800 to-forest-900 text-white rounded-2xl p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-md border border-forest-700">
+        <div className="space-y-2 max-w-xl">
+          <div className="flex items-center space-x-2 text-emerald-300 text-xs font-semibold uppercase tracking-wider">
+            <BookOpen className="w-4 h-4" />
+            <span>STATUTORY KNOWLEDGE BASE</span>
+          </div>
+          <h3 className="text-xl sm:text-2xl font-bold font-serif leading-tight">
+            Grounded Legal Metrology Regulatory Assistant
           </h3>
-          <p className="text-sm text-slate-300 max-w-xl">
+          <p className="text-xs text-emerald-100/90 leading-relaxed">
             Query official excerpts from the Legal Metrology Act, 2009 and Legal Metrology (Packaged Commodities) Rules, 2011 with direct statutory citations.
           </p>
         </div>
 
         <RouterLink
           to="/regulatory"
-          className="flex items-center space-x-2 bg-slate-800 hover:bg-slate-700 text-blue-400 font-semibold px-5 py-2.5 rounded-lg border border-slate-700 transition-colors whitespace-nowrap"
+          className="flex items-center space-x-2 bg-white hover:bg-ivory-100 text-forest-900 font-bold px-5 py-3 rounded-full transition-all text-xs whitespace-nowrap shadow-sm"
         >
           <span>Ask Legal Assistant</span>
-          <Search className="w-4 h-4" />
+          <ArrowRight className="w-4 h-4 text-forest-700" />
         </RouterLink>
       </section>
     </div>

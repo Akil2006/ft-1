@@ -17,14 +17,14 @@ export const Layout: React.FC<LayoutProps> = ({
   showSidebar = true,
 }) => {
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans">
+    <div className="min-h-screen bg-[#FAF7EE] text-slate-900 flex flex-col font-sans selection:bg-forest-200 selection:text-forest-900">
       <Navbar user={user} onLogout={onLogout} />
       
-      <div className="flex flex-1">
+      <div className="flex flex-1 relative">
         {showSidebar && user && <Sidebar userRole={user.role} />}
         
-        <main className="flex-1 p-6 max-w-7xl mx-auto w-full">
-          <DisclaimerBanner />
+        <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto w-full">
+          {user && <DisclaimerBanner />}
           {children}
         </main>
       </div>

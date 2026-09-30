@@ -73,46 +73,46 @@ export const AdminUsersPage: React.FC<AdminUsersPageProps> = ({ currentUser }) =
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div>
-        <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-blue-950/60 border border-blue-800/50 text-blue-300 text-xs font-semibold mb-2">
-          <Shield className="w-3.5 h-3.5 text-blue-400" />
+      <div className="border-b border-sand-300/60 pb-5">
+        <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-sand-200 border border-sand-300 text-slate-800 text-xs font-semibold mb-2">
+          <Shield className="w-3.5 h-3.5 text-forest-700" />
           <span>User Access Control</span>
         </div>
-        <h1 className="text-2xl font-bold text-white tracking-tight">System Users & Roles</h1>
-        <p className="text-xs text-slate-400">Manage user authorization, activation status, and role privileges</p>
+        <h1 className="font-serif text-3xl font-bold text-slate-900 tracking-tight">System Users & Roles</h1>
+        <p className="text-sm text-slate-600 mt-1">Manage user authorization, activation status, and role privileges across the organization.</p>
       </div>
 
       {error && (
-        <div className="bg-rose-950/60 border border-rose-800 text-rose-300 p-3 rounded-lg text-xs flex items-center gap-2">
-          <AlertCircle className="w-4 h-4 flex-shrink-0 text-rose-400" />
+        <div className="bg-rose-50 border border-rose-200 text-rose-900 p-3.5 rounded-lg text-xs flex items-center gap-2 font-medium">
+          <AlertCircle className="w-4 h-4 flex-shrink-0 text-rose-600" />
           <span>{error}</span>
         </div>
       )}
 
       {success && (
-        <div className="bg-emerald-950/60 border border-emerald-800 text-emerald-300 p-3 rounded-lg text-xs flex items-center gap-2">
-          <CheckCircle2 className="w-4 h-4 flex-shrink-0 text-emerald-400" />
+        <div className="bg-sage-100 border border-sage-300 text-forest-900 p-3.5 rounded-lg text-xs flex items-center gap-2 font-medium">
+          <CheckCircle2 className="w-4 h-4 flex-shrink-0 text-forest-700" />
           <span>{success}</span>
         </div>
       )}
 
       {/* Toolbar */}
-      <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 flex flex-col md:flex-row items-center gap-4">
+      <div className="bg-white border border-sand-300/80 rounded-xl p-4 shadow-sm flex flex-col md:flex-row items-center gap-4">
         <div className="relative flex-1 w-full">
-          <Search className="w-4 h-4 text-slate-500 absolute left-3 top-3" />
+          <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search user name or email..."
-            className="w-full pl-9 pr-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500"
+            className="w-full pl-10 pr-4 py-2 bg-sand-50/60 border border-sand-300 rounded-lg text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-forest-700"
           />
         </div>
 
         <select
           value={roleFilter}
           onChange={(e) => setRoleFilter(e.target.value)}
-          className="px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-xs text-white focus:outline-none focus:border-blue-500 w-full md:w-auto"
+          className="px-3.5 py-2 bg-sand-50/60 border border-sand-300 rounded-lg text-xs text-slate-800 focus:outline-none focus:border-forest-700 w-full md:w-auto font-sans"
         >
           <option value="">All Roles</option>
           <option value="USER">USER / INSPECTOR</option>
@@ -122,16 +122,16 @@ export const AdminUsersPage: React.FC<AdminUsersPageProps> = ({ currentUser }) =
       </div>
 
       {/* Users Table */}
-      <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
+      <div className="bg-white border border-sand-300/80 rounded-xl shadow-sm overflow-hidden">
         {loading ? (
           <div className="flex items-center justify-center p-12">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-forest-700"></div>
           </div>
         ) : users.length > 0 ? (
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="border-b border-slate-800 text-[11px] font-semibold uppercase tracking-wider text-slate-400 bg-slate-800/40">
+                <tr className="border-b border-sand-200 text-[11px] font-semibold uppercase tracking-wider text-slate-600 bg-sand-100/60">
                   <th className="py-3 px-4">User Name</th>
                   <th className="py-3 px-4">Email</th>
                   <th className="py-3 px-4">Role</th>
@@ -140,26 +140,26 @@ export const AdminUsersPage: React.FC<AdminUsersPageProps> = ({ currentUser }) =
                   <th className="py-3 px-4 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800 text-sm">
+              <tbody className="divide-y divide-sand-200 text-sm">
                 {users.map((u) => {
                   const isSelf = u.id === currentUser?.id;
                   return (
-                    <tr key={u.id} className="hover:bg-slate-800/40 transition-colors">
-                      <td className="py-3.5 px-4 font-semibold text-white flex items-center gap-2">
+                    <tr key={u.id} className="hover:bg-sand-50/70 transition-colors">
+                      <td className="py-3.5 px-4 font-semibold text-slate-900 flex items-center gap-2 font-sans">
                         <span>{u.name}</span>
                         {isSelf && (
-                          <span className="text-[10px] bg-blue-900/60 text-blue-300 font-mono px-2 py-0.5 rounded border border-blue-700/50">
+                          <span className="text-[10px] bg-forest-800 text-white font-mono px-2 py-0.5 rounded">
                             YOU
                           </span>
                         )}
                       </td>
-                      <td className="py-3.5 px-4 text-slate-300 text-xs font-mono">{u.email}</td>
+                      <td className="py-3.5 px-4 text-slate-600 text-xs font-mono">{u.email}</td>
                       <td className="py-3.5 px-4">
                         <select
                           value={u.role}
                           disabled={isSelf}
                           onChange={(e) => handleRoleChange(u, e.target.value as UserRole)}
-                          className="bg-slate-800 border border-slate-700 rounded text-xs text-slate-200 font-mono px-2 py-1 focus:outline-none disabled:opacity-60"
+                          className="bg-sand-50 border border-sand-300 rounded text-xs text-slate-800 font-mono px-2 py-1 focus:outline-none disabled:opacity-60"
                         >
                           <option value="USER">USER</option>
                           <option value="INSPECTOR">INSPECTOR</option>
@@ -168,36 +168,36 @@ export const AdminUsersPage: React.FC<AdminUsersPageProps> = ({ currentUser }) =
                       </td>
                       <td className="py-3.5 px-4">
                         <span
-                          className={`inline-flex items-center space-x-1.5 px-2.5 py-0.5 rounded text-[11px] font-mono font-bold border ${
+                          className={`inline-flex items-center space-x-1.5 px-2.5 py-0.5 rounded-md text-[11px] font-mono font-bold border ${
                             u.is_active
-                              ? 'bg-emerald-900/60 text-emerald-300 border-emerald-700/50'
-                              : 'bg-rose-900/60 text-rose-300 border-rose-700/50'
+                              ? 'bg-sage-100 text-forest-800 border-sage-300'
+                              : 'bg-rose-100 text-rose-900 border-rose-300'
                           }`}
                         >
                           {u.is_active ? (
                             <>
-                              <CheckCircle2 className="w-3 h-3 text-emerald-400" />
+                              <CheckCircle2 className="w-3 h-3 text-forest-700" />
                               <span>ACTIVE</span>
                             </>
                           ) : (
                             <>
-                              <XCircle className="w-3 h-3 text-rose-400" />
+                              <XCircle className="w-3 h-3 text-rose-600" />
                               <span>INACTIVE</span>
                             </>
                           )}
                         </span>
                       </td>
-                      <td className="py-3.5 px-4 text-slate-400 text-xs font-mono">
+                      <td className="py-3.5 px-4 text-slate-500 text-xs font-mono">
                         {new Date(u.created_at).toLocaleDateString()}
                       </td>
                       <td className="py-3.5 px-4 text-right">
                         <button
                           onClick={() => handleToggleStatus(u)}
                           disabled={isSelf && u.is_active}
-                          className={`px-3 py-1 rounded text-xs font-semibold border transition-colors ${
+                          className={`px-3 py-1 rounded-md text-xs font-semibold border transition-colors ${
                             u.is_active
-                              ? 'bg-rose-950/60 text-rose-300 border-rose-800 hover:bg-rose-900 disabled:opacity-40'
-                              : 'bg-emerald-950/60 text-emerald-300 border-emerald-800 hover:bg-emerald-900'
+                              ? 'bg-rose-50 text-rose-800 border-rose-200 hover:bg-rose-100 disabled:opacity-40'
+                              : 'bg-sage-100 text-forest-900 border-sage-300 hover:bg-sage-200'
                           }`}
                         >
                           {u.is_active ? 'Deactivate' : 'Activate'}
@@ -210,9 +210,10 @@ export const AdminUsersPage: React.FC<AdminUsersPageProps> = ({ currentUser }) =
             </table>
           </div>
         ) : (
-          <div className="text-center py-12 text-slate-500 text-xs">No users match your criteria.</div>
+          <div className="text-center py-12 text-slate-500 text-xs italic">No users match your criteria.</div>
         )}
       </div>
     </div>
   );
 };
+

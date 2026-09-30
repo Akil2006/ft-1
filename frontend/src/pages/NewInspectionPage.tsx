@@ -9,6 +9,7 @@ import {
   Sparkles,
   Trash2,
   Image as ImageIcon,
+  CheckCircle2,
 } from 'lucide-react';
 import { inspectionApi } from '../services/inspection';
 import { ocrApi } from '../services/ocr';
@@ -16,6 +17,7 @@ import { extractionApi } from '../services/extraction';
 import { rulesApi } from '../services/rules';
 import { ImageType } from '../types/inspection';
 import { CameraCaptureModal } from '../components/CameraCaptureModal';
+import { PackageInspectionIllustration } from '../components/BrandingAssets';
 
 interface PackageImageFile {
   id: string;
@@ -98,7 +100,6 @@ export const NewInspectionPage: React.FC = () => {
     setUploading(true);
     setError(null);
     try {
-      // Group files by image surface type or upload all through existing upload API
       const filesToUpload = packageImages.map((pi) => pi.file);
       await inspectionApi.uploadImages(inspectionId, filesToUpload, 'FRONT');
       setStep(3);
@@ -132,118 +133,127 @@ export const NewInspectionPage: React.FC = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto py-6 space-y-6">
+    <div className="max-w-4xl mx-auto py-6 space-y-6">
       {/* Page Header */}
-      <div>
-        <h1 className="text-2xl font-bold text-white tracking-tight">New Commodity Inspection</h1>
-        <p className="text-xs text-slate-400">
-          Upload or capture package surfaces for automated Legal Metrology screening
+      <div className="text-center space-y-1">
+        <h1 className="text-3xl font-bold font-serif text-slate-900">New Commodity Inspection</h1>
+        <p className="text-xs text-slate-600 font-sans">
+          Upload or capture package images to run automated Legal Metrology screening.
+        </p>
+        <p className="font-handwriting text-lg text-forest-700 font-bold pt-1">
+          Scan Compliant Packs. Ensure Fair Markets.
         </p>
       </div>
 
-      {/* Step Indicator Bar */}
-      <div className="flex items-center justify-between bg-slate-900 border border-slate-800 rounded-xl p-4">
-        <div className={`flex items-center space-x-2 ${step >= 1 ? 'text-blue-400' : 'text-slate-500'}`}>
-          <div className={`w-7 h-7 rounded-full flex items-center justify-center font-bold text-xs ${step >= 1 ? 'bg-blue-600 text-white' : 'bg-slate-800 text-slate-400'}`}>
+      {/* Workflow Step Bar */}
+      <div className="flex items-center justify-between bg-white border border-sand-300 rounded-2xl p-4 shadow-xs">
+        <div className={`flex items-center space-x-2.5 ${step >= 1 ? 'text-forest-800' : 'text-slate-400'}`}>
+          <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs ${step >= 1 ? 'bg-forest-700 text-white shadow-xs' : 'bg-sand-200 text-slate-500'}`}>
             1
           </div>
-          <span className="text-xs font-semibold">Metadata</span>
+          <span className="text-xs font-bold font-sans">Metadata</span>
         </div>
-        <div className="h-0.5 w-12 bg-slate-800"></div>
+        <div className="h-0.5 flex-1 bg-sand-200 mx-4" />
 
-        <div className={`flex items-center space-x-2 ${step >= 2 ? 'text-blue-400' : 'text-slate-500'}`}>
-          <div className={`w-7 h-7 rounded-full flex items-center justify-center font-bold text-xs ${step >= 2 ? 'bg-blue-600 text-white' : 'bg-slate-800 text-slate-400'}`}>
+        <div className={`flex items-center space-x-2.5 ${step >= 2 ? 'text-forest-800' : 'text-slate-400'}`}>
+          <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs ${step >= 2 ? 'bg-forest-700 text-white shadow-xs' : 'bg-sand-200 text-slate-500'}`}>
             2
           </div>
-          <span className="text-xs font-semibold">Add Images</span>
+          <span className="text-xs font-bold font-sans">Add Images</span>
         </div>
-        <div className="h-0.5 w-12 bg-slate-800"></div>
+        <div className="h-0.5 flex-1 bg-sand-200 mx-4" />
 
-        <div className={`flex items-center space-x-2 ${step >= 3 ? 'text-blue-400' : 'text-slate-500'}`}>
-          <div className={`w-7 h-7 rounded-full flex items-center justify-center font-bold text-xs ${step >= 3 ? 'bg-blue-600 text-white' : 'bg-slate-800 text-slate-400'}`}>
+        <div className={`flex items-center space-x-2.5 ${step >= 3 ? 'text-forest-800' : 'text-slate-400'}`}>
+          <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs ${step >= 3 ? 'bg-forest-700 text-white shadow-xs' : 'bg-sand-200 text-slate-500'}`}>
             3
           </div>
-          <span className="text-xs font-semibold">Screening</span>
+          <span className="text-xs font-bold font-sans">Screening</span>
         </div>
       </div>
 
       {error && (
-        <div className="bg-rose-950/60 border border-rose-800 text-rose-300 p-3 rounded-lg text-xs flex items-center gap-2">
-          <AlertCircle className="w-4 h-4 flex-shrink-0 text-rose-400" />
-          <span>{error}</span>
+        <div className="bg-rose-50 border border-rose-200 text-rose-800 p-3.5 rounded-xl text-xs flex items-center gap-2.5 shadow-xs">
+          <AlertCircle className="w-4 h-4 flex-shrink-0 text-rose-600" />
+          <span className="font-medium">{error}</span>
         </div>
       )}
 
-      {/* Step 1: Metadata Form */}
+      {/* Step 1: Commodity Metadata Form */}
       {step === 1 && (
-        <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-4">
-          <h3 className="text-base font-bold text-white flex items-center gap-2">
-            <Package className="w-5 h-5 text-blue-400" />
-            <span>Commodity Metadata</span>
-          </h3>
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+          <div className="md:col-span-4 hidden md:block">
+            <PackageInspectionIllustration className="w-full shadow-sm" />
+          </div>
 
-          <form onSubmit={handleCreateInspection} className="space-y-4">
-            <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
-                Product Name *
-              </label>
-              <input
-                type="text"
-                required
-                value={productName}
-                onChange={(e) => setProductName(e.target.value)}
-                placeholder="e.g. Premium Roasted Almonds 500g"
-                className="w-full px-3.5 py-2 bg-slate-800 border border-slate-700 rounded-lg text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500"
-              />
+          <div className="md:col-span-8 bg-white border border-sand-300 rounded-3xl p-6 sm:p-8 space-y-5 shadow-xs">
+            <div className="flex items-center space-x-2 pb-2 border-b border-sand-200">
+              <Package className="w-5 h-5 text-forest-700" />
+              <h3 className="text-base font-bold font-serif text-slate-900">Commodity Metadata</h3>
             </div>
 
-            <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
-                Category
-              </label>
-              <select
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-                className="w-full px-3.5 py-2 bg-slate-800 border border-slate-700 rounded-lg text-sm text-white focus:outline-none focus:border-blue-500"
+            <form onSubmit={handleCreateInspection} className="space-y-4">
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5 font-sans">
+                  Product Name *
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={productName}
+                  onChange={(e) => setProductName(e.target.value)}
+                  placeholder="e.g. Premium Roasted Almonds 500g"
+                  className="w-full px-4 py-2.5 bg-ivory-50 border border-sand-300 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-forest-600/30 focus:border-forest-600 transition-all font-sans"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5 font-sans">
+                  Category
+                </label>
+                <select
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                  className="w-full px-4 py-2.5 bg-ivory-50 border border-sand-300 rounded-xl text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-forest-600/30 focus:border-forest-600 transition-all font-sans"
+                >
+                  <option value="FOOD">Food & Beverage</option>
+                  <option value="COSMETICS">Cosmetics & Personal Care</option>
+                  <option value="PHARMA">Pharmaceuticals</option>
+                  <option value="ELECTRONICS">Electronics & Appliances</option>
+                  <option value="GENERAL">General Packaged Goods</option>
+                </select>
+              </div>
+
+              <button
+                type="submit"
+                className="w-full bg-forest-700 hover:bg-forest-600 text-white font-bold py-3 rounded-xl shadow-md shadow-forest-900/20 transition-all text-xs tracking-wide uppercase mt-4"
               >
-                <option value="FOOD">Food & Beverage</option>
-                <option value="COSMETICS">Cosmetics & Personal Care</option>
-                <option value="PHARMA">Pharmaceuticals</option>
-                <option value="ELECTRONICS">Electronics & Appliances</option>
-                <option value="GENERAL">General Packaged Goods</option>
-              </select>
-            </div>
-
-            <button
-              type="submit"
-              className="w-full bg-blue-600 hover:bg-blue-500 text-white font-semibold py-2.5 rounded-lg shadow-lg shadow-blue-600/30 transition-all text-sm mt-2"
-            >
-              Continue to Package Images →
-            </button>
-          </form>
+                Continue to Package Images →
+              </button>
+            </form>
+          </div>
         </div>
       )}
 
-      {/* Step 2: Image Input Selection (Dual Mode: Upload OR Camera) */}
+      {/* Step 2: Image Selection (Dual Mode: Upload OR Live Camera) */}
       {step === 2 && (
-        <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-6">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+        <div className="bg-white border border-sand-300 rounded-3xl p-6 sm:p-8 space-y-6 shadow-xs">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-sand-200 pb-4">
             <div>
-              <h3 className="text-base font-bold text-white flex items-center gap-2">
-                <ImageIcon className="w-5 h-5 text-blue-400" />
-                <span>Package Images</span>
+              <h3 className="text-base font-bold font-serif text-slate-900 flex items-center gap-2">
+                <ImageIcon className="w-5 h-5 text-forest-700" />
+                <span>Package Images & Label Surfaces</span>
               </h3>
-              <p className="text-xs text-slate-400">
-                Provide surface images via File Upload or Live Camera Capture.
+              <p className="text-xs text-slate-500 font-sans">
+                Provide package surface images via File Upload or Live Camera Stream.
               </p>
             </div>
 
             <div className="flex items-center space-x-2">
-              <span className="text-xs text-slate-400">Surface Type:</span>
+              <span className="text-xs font-bold text-slate-700 uppercase tracking-wider">Surface Type:</span>
               <select
                 value={currentSurfaceType}
                 onChange={(e) => setCurrentSurfaceType(e.target.value as ImageType)}
-                className="bg-slate-800 border border-slate-700 rounded-md text-xs text-white px-2.5 py-1 focus:outline-none"
+                className="bg-ivory-100 border border-sand-300 rounded-lg text-xs font-bold text-slate-800 px-3 py-1.5 focus:outline-none"
               >
                 <option value="FRONT">FRONT</option>
                 <option value="BACK">BACK</option>
@@ -254,16 +264,15 @@ export const NewInspectionPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Dual Action Option Buttons */}
+          {/* Action Choice Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* Option 1: Upload File */}
-            <div className="border border-slate-700/80 rounded-xl p-6 text-center bg-slate-800/40 hover:bg-slate-800/80 transition-all flex flex-col items-center justify-center space-y-3">
-              <div className="w-12 h-12 rounded-xl bg-blue-900/40 border border-blue-700/50 flex items-center justify-center text-blue-400">
+            <div className="border border-sand-300 rounded-2xl p-6 text-center bg-ivory-50/80 hover:bg-ivory-100 transition-all flex flex-col items-center justify-center space-y-3">
+              <div className="w-12 h-12 rounded-2xl bg-forest-100 text-forest-700 border border-forest-200 flex items-center justify-center shadow-xs">
                 <UploadCloud className="w-6 h-6" />
               </div>
               <div>
-                <p className="text-sm font-semibold text-white">Upload Image File</p>
-                <p className="text-[11px] text-slate-400">Select JPG, PNG or WEBP from disk</p>
+                <p className="text-xs font-bold text-slate-900 uppercase tracking-wider">Upload Image File</p>
+                <p className="text-[11px] text-slate-500">Select JPG, PNG, or WEBP package files</p>
               </div>
               <input
                 type="file"
@@ -275,59 +284,51 @@ export const NewInspectionPage: React.FC = () => {
               />
               <label
                 htmlFor="package-file-input"
-                className="cursor-pointer bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold px-4 py-2 rounded-lg shadow-md transition-colors inline-flex items-center gap-1.5"
+                className="cursor-pointer bg-forest-700 hover:bg-forest-600 text-white text-xs font-bold px-4 py-2.5 rounded-full shadow-xs transition-all inline-flex items-center gap-2"
               >
                 <UploadCloud className="w-4 h-4" />
-                <span>Upload Image</span>
+                <span>Browse Files</span>
               </label>
             </div>
 
-            {/* Option 2: Camera Capture */}
-            <div className="border border-slate-700/80 rounded-xl p-6 text-center bg-slate-800/40 hover:bg-slate-800/80 transition-all flex flex-col items-center justify-center space-y-3">
-              <div className="w-12 h-12 rounded-xl bg-emerald-900/40 border border-emerald-700/50 flex items-center justify-center text-emerald-400">
+            <div className="border border-sand-300 rounded-2xl p-6 text-center bg-ivory-50/80 hover:bg-ivory-100 transition-all flex flex-col items-center justify-center space-y-3">
+              <div className="w-12 h-12 rounded-2xl bg-forest-100 text-forest-700 border border-forest-200 flex items-center justify-center shadow-xs">
                 <Camera className="w-6 h-6" />
               </div>
               <div>
-                <p className="text-sm font-semibold text-white">Capture with Camera</p>
-                <p className="text-[11px] text-slate-400">Use live web camera stream</p>
+                <p className="text-xs font-bold text-slate-900 uppercase tracking-wider">Capture with Camera</p>
+                <p className="text-[11px] text-slate-500">Use live web camera feed</p>
               </div>
               <button
                 type="button"
                 onClick={() => setIsCameraOpen(true)}
-                className="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold px-4 py-2 rounded-lg shadow-md transition-colors inline-flex items-center gap-1.5"
+                className="bg-forest-700 hover:bg-forest-600 text-white text-xs font-bold px-4 py-2.5 rounded-full shadow-xs transition-all inline-flex items-center gap-2"
               >
                 <Camera className="w-4 h-4" />
-                <span>Capture with Camera</span>
+                <span>Open Live Camera</span>
               </button>
             </div>
           </div>
 
-          {/* Selected Package Images Grid */}
+          {/* Uploaded Package Images Grid */}
           {packageImages.length > 0 && (
-            <div className="space-y-3 pt-4 border-t border-slate-800">
-              <h4 className="text-xs font-bold text-slate-300 uppercase tracking-wider">
+            <div className="space-y-3 pt-4 border-t border-sand-200">
+              <h4 className="text-xs font-bold text-slate-800 uppercase tracking-wider font-sans">
                 Attached Package Surfaces ({packageImages.length})
               </h4>
 
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 {packageImages.map((img) => (
-                  <div
-                    key={img.id}
-                    className="relative bg-slate-800 rounded-lg overflow-hidden border border-slate-700 group"
-                  >
-                    <img
-                      src={img.previewUrl}
-                      alt="Package surface"
-                      className="w-full h-28 object-cover"
-                    />
-                    <div className="p-1.5 bg-slate-900/90 flex items-center justify-between text-[10px]">
-                      <span className="font-mono text-blue-400 font-bold">{img.imageType}</span>
-                      <span className="text-slate-400 uppercase">{img.source}</span>
+                  <div key={img.id} className="relative bg-ivory-50 rounded-xl overflow-hidden border border-sand-300 shadow-xs group">
+                    <img src={img.previewUrl} alt="Package surface" className="w-full h-28 object-cover" />
+                    <div className="p-1.5 bg-white flex items-center justify-between text-[10px] border-t border-sand-200">
+                      <span className="font-bold text-forest-700 font-mono">{img.imageType}</span>
+                      <span className="text-slate-500 uppercase">{img.source}</span>
                     </div>
 
                     <button
                       onClick={() => handleRemoveImage(img.id)}
-                      className="absolute top-1 right-1 p-1 bg-rose-600/90 text-white rounded opacity-0 group-hover:opacity-100 transition-opacity"
+                      className="absolute top-1 right-1 p-1.5 bg-rose-600 text-white rounded-lg opacity-0 group-hover:opacity-100 transition-opacity shadow-xs"
                       title="Remove image"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
@@ -341,12 +342,11 @@ export const NewInspectionPage: React.FC = () => {
           <button
             onClick={handleUploadImages}
             disabled={uploading || packageImages.length === 0}
-            className="w-full bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white font-semibold py-2.5 rounded-lg shadow-lg shadow-blue-600/30 transition-all text-sm mt-4"
+            className="w-full bg-forest-700 hover:bg-forest-600 disabled:opacity-50 text-white font-bold py-3 rounded-xl shadow-md transition-all text-xs uppercase tracking-wide mt-4"
           >
             {uploading ? 'Processing & Uploading Images...' : `Proceed to Screening (${packageImages.length} images) →`}
           </button>
 
-          {/* Camera Capture Modal */}
           <CameraCaptureModal
             isOpen={isCameraOpen}
             onClose={() => setIsCameraOpen(false)}
@@ -357,29 +357,29 @@ export const NewInspectionPage: React.FC = () => {
 
       {/* Step 3: Run Pipeline */}
       {step === 3 && (
-        <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 text-center space-y-6">
-          <div className="w-14 h-14 rounded-2xl bg-blue-900/60 border border-blue-700/50 flex items-center justify-center mx-auto text-blue-400">
+        <div className="bg-white border border-sand-300 rounded-3xl p-8 text-center space-y-6 shadow-xs">
+          <div className="w-16 h-16 rounded-2xl bg-forest-100 border border-forest-200 flex items-center justify-center mx-auto text-forest-700 shadow-xs">
             <Sparkles className="w-8 h-8" />
           </div>
 
-          <div>
-            <h3 className="text-xl font-bold text-white">Execute Compliance Screening</h3>
-            <p className="text-xs text-slate-400 mt-1">
-              Runs OpenCV deskewing, fallback OCR engines, pattern field matchers, and Legal Metrology Rule Engine.
+          <div className="space-y-1">
+            <h3 className="text-2xl font-bold font-serif text-slate-900">Execute Compliance Screening</h3>
+            <p className="text-xs text-slate-600 font-sans max-w-md mx-auto">
+              Runs OpenCV deskewing, fallback OCR engines, statutory field extraction matchers, and Legal Metrology Rule Engine.
             </p>
           </div>
 
           {processing ? (
-            <div className="space-y-3 py-4">
-              <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-500 mx-auto"></div>
-              <p className="text-xs font-mono text-blue-400 font-medium">{processStatus}</p>
+            <div className="space-y-3 py-6">
+              <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-forest-700 mx-auto" />
+              <p className="text-xs font-mono font-bold text-forest-700">{processStatus}</p>
             </div>
           ) : (
             <button
               onClick={handleRunPipeline}
-              className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-8 py-3 rounded-lg shadow-xl shadow-emerald-600/30 transition-all text-base inline-flex items-center gap-2"
+              className="bg-forest-700 hover:bg-forest-600 text-white font-bold px-8 py-3.5 rounded-full shadow-lg shadow-forest-900/20 transition-all text-xs uppercase tracking-wide inline-flex items-center gap-2"
             >
-              <Play className="w-5 h-5 fill-white" />
+              <Play className="w-4 h-4 fill-white" />
               <span>Start Automated Screening</span>
             </button>
           )}

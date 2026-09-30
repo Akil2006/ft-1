@@ -7,6 +7,38 @@ export default {
   theme: {
     extend: {
       colors: {
+        forest: {
+          50: '#F4F7F4',
+          100: '#E8F5E9',
+          200: '#D8F3DC',
+          400: '#34D399',
+          500: '#15803D',
+          600: '#166534',
+          700: '#14532D',
+          800: '#0F392B',
+          900: '#08271C',
+        },
+        ivory: {
+          50: '#FFFDF9',
+          100: '#FAF7EE',
+          200: '#F8F5EC',
+          300: '#F4EFE0',
+          400: '#EDE6D5',
+        },
+        sage: {
+          50: '#F5F7F5',
+          100: '#E8EFE8',
+          200: '#D9E3D9',
+          300: '#B8C9B8',
+          500: '#84A98C',
+          700: '#4A6B53',
+        },
+        sand: {
+          50: '#FBF9F5',
+          100: '#F5F0EB',
+          200: '#EDE6DD',
+          300: '#E2D7CB',
+        },
         brand: {
           50: '#f0f9ff',
           100: '#e0f2fe',
@@ -15,6 +47,11 @@ export default {
           700: '#075985',
           900: '#0c4a6e',
         },
+      },
+      fontFamily: {
+        serif: ['Newsreader', 'Playfair Display', 'Georgia', 'serif'],
+        sans: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
+        handwriting: ['Caveat', 'Kalam', 'cursive'],
       },
       fontSize: {
         '2xs': ['0.8125rem', { lineHeight: '1.125rem' }],

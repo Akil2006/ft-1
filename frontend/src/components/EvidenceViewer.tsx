@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Evidence } from '../types/evidence';
 import { ExtractedField } from '../types/extraction';
-import { Eye, Crop } from 'lucide-react';
+import { Eye, Crop, Sparkles } from 'lucide-react';
 
 interface EvidenceViewerProps {
   imageUrl: string;
@@ -16,10 +16,10 @@ export const EvidenceViewer: React.FC<EvidenceViewerProps> = ({
 }) => {
   const [selectedFieldId, setSelectedFieldId] = useState<string | null>(null);
 
-  const getConfidenceColor = (confidence: number) => {
-    if (confidence >= 0.85) return 'bg-emerald-500/20 text-emerald-400 border-emerald-500/40';
-    if (confidence >= 0.70) return 'bg-amber-500/20 text-amber-400 border-amber-500/40';
-    return 'bg-rose-500/20 text-rose-400 border-rose-500/40';
+  const getConfidenceBadge = (confidence: number) => {
+    if (confidence >= 0.85) return 'bg-sage-100 text-forest-800 border-sage-300';
+    if (confidence >= 0.70) return 'bg-amber-100 text-amber-900 border-amber-300';
+    return 'bg-rose-100 text-rose-900 border-rose-300';
   };
 
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
@@ -33,18 +33,18 @@ export const EvidenceViewer: React.FC<EvidenceViewerProps> = ({
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 bg-slate-900 border border-slate-800 rounded-xl p-6">
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 bg-white border border-sand-300/80 rounded-xl p-6 shadow-sm">
       {/* Main Image with Bounding Box Overlay */}
       <div className="lg:col-span-2 space-y-4">
-        <div className="flex items-center justify-between">
-          <h3 className="text-lg font-semibold text-white flex items-center gap-2">
-            <Eye className="w-5 h-5 text-blue-400" />
-            <span>Packaging Evidence & OCR Bounding Boxes</span>
+        <div className="flex items-center justify-between border-b border-sand-200 pb-3">
+          <h3 className="font-serif text-lg font-bold text-slate-900 flex items-center gap-2">
+            <Eye className="w-5 h-5 text-forest-700" />
+            <span>Packaging Evidence & Statutory OCR Bounding Boxes</span>
           </h3>
-          <span className="text-xs text-slate-400">Click field card to highlight region</span>
+          <span className="text-xs text-slate-500 font-sans">Click card to highlight region</span>
         </div>
 
-        <div className="relative border border-slate-700/60 rounded-lg overflow-hidden bg-black flex items-center justify-center min-h-[350px]">
+        <div className="relative border border-sand-300 rounded-xl overflow-hidden bg-slate-950 flex items-center justify-center min-h-[360px] shadow-inner">
           <img
             src={formatImageUrl(imageUrl)}
             alt="Package Surface"
@@ -68,17 +68,18 @@ export const EvidenceViewer: React.FC<EvidenceViewerProps> = ({
                     y={`${y}%`}
                     width={`${w}%`}
                     height={`${h}%`}
-                    fill={isSelected ? 'rgba(59, 130, 246, 0.25)' : 'rgba(234, 179, 8, 0.15)'}
-                    stroke={isSelected ? '#3b82f6' : '#eab308'}
+                    fill={isSelected ? 'rgba(20, 83, 45, 0.35)' : 'rgba(217, 119, 6, 0.2)'}
+                    stroke={isSelected ? '#14532D' : '#D97706'}
                     strokeWidth={isSelected ? '3' : '2'}
                     rx="4"
                   />
                   <text
                     x={`${x}%`}
                     y={`${Math.max(y - 2, 4)}%`}
-                    fill={isSelected ? '#60a5fa' : '#fde047'}
+                    fill={isSelected ? '#4ADE80' : '#FDE047'}
                     fontSize="11"
                     fontWeight="bold"
+                    className="font-mono"
                   >
                     {ev.field_name}
                   </text>
@@ -91,10 +92,13 @@ export const EvidenceViewer: React.FC<EvidenceViewerProps> = ({
 
       {/* Field Cards & Snippets List */}
       <div className="space-y-4">
-        <h3 className="text-lg font-semibold text-white flex items-center gap-2">
-          <Crop className="w-5 h-5 text-emerald-400" />
-          <span>Extracted ROI Crops</span>
-        </h3>
+        <div className="flex items-center justify-between border-b border-sand-200 pb-3">
+          <h3 className="font-serif text-lg font-bold text-slate-900 flex items-center gap-2">
+            <Crop className="w-5 h-5 text-forest-700" />
+            <span>Extracted ROI Crops</span>
+          </h3>
+          <span className="text-xs text-slate-500 font-mono">OCR Engine</span>
+        </div>
 
         <div className="space-y-3 max-h-[550px] overflow-y-auto pr-1">
           {extractedFields.map((field) => {
@@ -105,18 +109,18 @@ export const EvidenceViewer: React.FC<EvidenceViewerProps> = ({
               <div
                 key={field.id}
                 onClick={() => setSelectedFieldId(isSelected ? null : field.id)}
-                className={`p-3.5 rounded-lg border transition-all cursor-pointer ${
+                className={`p-3.5 rounded-xl border transition-all cursor-pointer ${
                   isSelected
-                    ? 'bg-blue-950/60 border-blue-500 shadow-md shadow-blue-500/10'
-                    : 'bg-slate-800/60 border-slate-700/60 hover:bg-slate-800 hover:border-slate-600'
+                    ? 'bg-sage-50 border-forest-600 shadow-sm'
+                    : 'bg-sand-50/70 border-sand-300 hover:bg-sand-100/70'
                 }`}
               >
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-semibold uppercase tracking-wider text-slate-300">
+                  <span className="text-xs font-semibold uppercase tracking-wider text-slate-800 font-sans">
                     {field.field_name.replace('_', ' ')}
                   </span>
                   <span
-                    className={`text-[11px] font-mono px-2 py-0.5 rounded border ${getConfidenceColor(
+                    className={`text-[11px] font-mono px-2 py-0.5 rounded-md border font-semibold ${getConfidenceBadge(
                       field.confidence
                     )}`}
                   >
@@ -124,14 +128,14 @@ export const EvidenceViewer: React.FC<EvidenceViewerProps> = ({
                   </span>
                 </div>
 
-                <div className="text-sm font-medium text-white mb-2">
-                  {field.raw_value || <span className="text-slate-500 italic">Not Detected</span>}
+                <div className="text-sm font-semibold text-slate-900 mb-2 font-mono bg-white px-2 py-1 rounded border border-sand-200">
+                  {field.raw_value || <span className="text-slate-400 italic font-sans text-xs">Not Detected</span>}
                 </div>
 
                 {ev && (ev.crop_url || ev.crop_path) && (
-                  <div className="mt-2 pt-2 border-t border-slate-700/50">
-                    <p className="text-[10px] text-slate-400 mb-1">Extracted Crop ROI Snippet:</p>
-                    <div className="bg-black p-1 rounded border border-slate-700">
+                  <div className="mt-2 pt-2 border-t border-sand-200">
+                    <p className="text-[10px] text-slate-500 mb-1 font-mono uppercase">Extracted Crop ROI Snippet:</p>
+                    <div className="bg-slate-950 p-1.5 rounded-lg border border-sand-300">
                       <img
                         src={formatImageUrl(ev.crop_url || ev.crop_path)}
                         alt={`Crop ${field.field_name}`}
@@ -148,3 +152,4 @@ export const EvidenceViewer: React.FC<EvidenceViewerProps> = ({
     </div>
   );
 };
+

@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Shield, LogOut, User as UserIcon, PlusCircle } from 'lucide-react';
+import { LogOut, PlusCircle, Search, Bell } from 'lucide-react';
 import { authApi } from '../services/auth';
+import { SmartPackLogo } from './BrandingAssets';
 
 interface NavbarProps {
   user: { name: string; email: string; role?: string } | null;
@@ -19,49 +20,68 @@ export const Navbar: React.FC<NavbarProps> = ({ user, onLogout }) => {
 
   const formatRoleLabel = (role?: string) => {
     if (role === 'ADMIN') return 'Administrator';
-    if (role === 'INSPECTOR') return 'Inspector';
     return 'Inspector';
   };
 
   return (
-    <header className="bg-slate-900 border-b border-slate-800 text-white sticky top-0 z-50">
+    <header className="bg-white/90 backdrop-blur-md border-b border-sand-300/60 sticky top-0 z-50 shadow-sm transition-all">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          <div className="flex items-center space-x-3">
-            <Link to="/" className="flex items-center space-x-3 group">
-              <div className="w-10 h-10 rounded-lg bg-blue-600 flex items-center justify-center shadow-lg shadow-blue-500/20 group-hover:bg-blue-500 transition-colors">
-                <Shield className="w-6 h-6 text-white" />
-              </div>
-              <div>
-                <span className="text-xl font-bold tracking-tight bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">
-                  SmartPack
-                </span>
-                <span className="block text-[10px] text-blue-400 font-semibold uppercase tracking-wider -mt-1">
-                  Legal Metrology Screening
-                </span>
-              </div>
+          {/* Logo & Brand Identity */}
+          <div className="flex items-center space-x-6">
+            <Link to="/" className="flex items-center space-x-2 group">
+              <SmartPackLogo />
             </Link>
           </div>
 
+          {/* Center Search Bar (Shortcut Ctrl+K) */}
+          <div className="hidden md:flex items-center flex-1 max-w-md mx-6">
+            <div className="relative w-full">
+              <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+              <input
+                type="text"
+                placeholder="Search inspections, products, or rules..."
+                className="w-full bg-ivory-100/90 border border-sand-300 rounded-full pl-9 pr-14 py-1.5 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-forest-600/30 focus:border-forest-600 transition-all"
+                readOnly
+                onClick={() => navigate('/inspections')}
+              />
+              <kbd className="absolute right-3 top-1/2 -translate-y-1/2 bg-white border border-sand-300 rounded px-1.5 py-0.5 text-[10px] font-mono text-slate-400 shadow-2xs">
+                Ctrl + K
+              </kbd>
+            </div>
+          </div>
+
+          {/* Right Header Actions */}
           <div className="flex items-center space-x-4">
             {user ? (
               <>
                 <Link
                   to="/inspections/new"
-                  className="flex items-center space-x-2 bg-blue-600 hover:bg-blue-500 text-white text-sm font-medium px-4 py-2 rounded-md shadow transition-colors"
+                  className="flex items-center space-x-2 bg-forest-700 hover:bg-forest-600 text-white text-xs font-semibold px-4 py-2 rounded-full shadow-sm shadow-forest-900/20 transition-all hover:scale-[1.02] active:scale-[0.98]"
                 >
                   <PlusCircle className="w-4 h-4" />
                   <span>New Inspection</span>
                 </Link>
 
-                <div className="flex items-center space-x-3 border-l border-slate-700 pl-4">
-                  <div className="flex items-center space-x-2">
-                    <div className="w-8 h-8 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-300 font-bold text-xs">
-                      {user.role === 'ADMIN' ? 'A' : 'I'}
+                {/* Notifications Bell */}
+                <button
+                  onClick={() => navigate('/inspections')}
+                  className="relative p-2 text-slate-500 hover:text-forest-700 hover:bg-ivory-200/80 rounded-full transition-colors"
+                  title="Notifications"
+                >
+                  <Bell className="w-4 h-4" />
+                  <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full ring-2 ring-white" />
+                </button>
+
+                {/* User Profile Dropdown / Badge */}
+                <div className="flex items-center space-x-3 border-l border-sand-300/80 pl-4">
+                  <div className="flex items-center space-x-2.5">
+                    <div className="w-8 h-8 rounded-full bg-forest-700 text-white flex items-center justify-center font-bold text-xs shadow-sm ring-2 ring-forest-600/20">
+                      {user.name.charAt(0).toUpperCase()}
                     </div>
-                    <div className="hidden md:block text-left">
-                      <p className="text-xs font-medium text-slate-200 leading-tight">{user.name}</p>
-                      <p className="text-[10px] text-blue-400 font-medium">
+                    <div className="hidden sm:block text-left">
+                      <p className="text-xs font-bold text-slate-900 leading-tight">{user.name}</p>
+                      <p className="text-[10px] text-forest-600 font-medium">
                         {formatRoleLabel(user.role)}
                       </p>
                     </div>
@@ -69,7 +89,7 @@ export const Navbar: React.FC<NavbarProps> = ({ user, onLogout }) => {
 
                   <button
                     onClick={handleLogout}
-                    className="p-2 text-slate-400 hover:text-red-400 hover:bg-slate-800 rounded-md transition-colors"
+                    className="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                     title="Sign Out"
                   >
                     <LogOut className="w-4 h-4" />
@@ -80,15 +100,15 @@ export const Navbar: React.FC<NavbarProps> = ({ user, onLogout }) => {
               <div className="flex items-center space-x-3">
                 <Link
                   to="/login"
-                  className="text-sm text-slate-300 hover:text-white font-medium px-3 py-2"
+                  className="text-xs text-slate-700 hover:text-forest-800 font-semibold px-3 py-2 transition-colors"
                 >
-                  Sign In
+                  Inspector Sign In
                 </Link>
                 <Link
                   to="/register"
-                  className="bg-blue-600 hover:bg-blue-500 text-white text-sm font-medium px-4 py-2 rounded-md shadow transition-colors"
+                  className="bg-forest-700 hover:bg-forest-600 text-white text-xs font-semibold px-4 py-2 rounded-full shadow-sm transition-all"
                 >
-                  Register
+                  Register Account
                 </Link>
               </div>
             )}
