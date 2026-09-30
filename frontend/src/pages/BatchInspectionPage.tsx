@@ -11,10 +11,12 @@ import {
   Loader2,
   ArrowRight,
   RefreshCw,
-  Sparkles,
+  Lightbulb,
+  Tag,
 } from 'lucide-react';
 import { batchApi } from '../services/batch';
 import { BatchDetailResponse, BatchResponse } from '../types/batch';
+import { BatchPackageConveyorGraphic } from '../components/BrandingAssets';
 
 export const BatchInspectionPage: React.FC = () => {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
@@ -79,22 +81,29 @@ export const BatchInspectionPage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-8 py-2">
+    <div className="space-y-6 py-2">
       {/* Editorial Header Banner */}
-      <div className="bg-gradient-to-r from-ivory-100 via-sand-100 to-sage-50 rounded-3xl p-6 sm:p-8 border border-sand-300 shadow-xs relative overflow-hidden">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative z-10">
-          <div className="space-y-1 max-w-2xl">
-            <h1 className="text-3xl font-bold font-serif text-slate-900 flex items-center gap-3">
-              <Layers className="h-7 w-7 text-forest-700" />
-              <span>Batch Package Inspection</span>
-            </h1>
-            <p className="text-xs text-slate-600 font-sans">
-              Upload multiple package images to execute automated legal metrology inspection sessions in bulk.
+      <div className="bg-[#FAF7EE] rounded-3xl p-6 sm:p-8 border border-sand-300 shadow-xs relative overflow-hidden flex flex-col sm:flex-row items-center justify-between gap-6">
+        <div className="space-y-1.5 max-w-xl">
+          <h1 className="text-3xl font-bold font-serif text-slate-900 flex items-center gap-3">
+            <Layers className="h-8 w-8 text-[#14532D]" />
+            <span>Batch Package Inspection</span>
+          </h1>
+          <p className="text-xs text-slate-700 font-sans">
+            Upload multiple package images to execute automated legal metrology inspection sessions in bulk.
+          </p>
+          <div className="pt-1 flex items-center space-x-2">
+            <p className="font-handwriting text-xl text-slate-800 font-bold">
+              "Multiple products. Faster screening. Fairer markets."
             </p>
-            <p className="font-handwriting text-lg text-forest-700 font-bold pt-1">
-              Multiple products. Faster screening. Fairer markets.
-            </p>
+            <svg className="w-12 h-5 text-slate-600" viewBox="0 0 60 20" fill="none">
+              <path d="M5 5 C 25 18, 45 5, 55 15 M 55 15 L 48 11 M 55 15 L 52 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+            </svg>
           </div>
+        </div>
+
+        <div className="hidden md:block">
+          <BatchPackageConveyorGraphic className="w-72 h-32" />
         </div>
       </div>
 
@@ -106,66 +115,101 @@ export const BatchInspectionPage: React.FC = () => {
       )}
 
       {/* Step 1: Batch Identifier Name */}
-      <div className="bg-white border border-sand-300 rounded-3xl p-6 sm:p-8 space-y-4 shadow-xs">
+      <div className="bg-white border border-sand-300 rounded-2xl p-6 space-y-4 shadow-xs">
         <div className="flex items-center space-x-3">
-          <div className="w-8 h-8 rounded-full bg-forest-700 text-white font-bold text-xs flex items-center justify-center font-sans shadow-xs">
+          <div className="w-7 h-7 rounded-full bg-[#14532D] text-white font-bold text-xs flex items-center justify-center font-sans">
             1
           </div>
           <h2 className="text-base font-bold font-serif text-slate-900">Batch Name / Identifier</h2>
         </div>
 
-        <div>
-          <input
-            type="text"
-            value={batchName}
-            onChange={(e) => setBatchName(e.target.value)}
-            placeholder="e.g. Daily Warehouse Shipment Audit"
-            className="w-full bg-ivory-50 border border-sand-300 rounded-xl px-4 py-2.5 text-xs text-slate-900 font-sans focus:outline-none focus:ring-2 focus:ring-forest-600/30 focus:border-forest-600 transition-all"
-          />
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+          <div className="md:col-span-8 relative">
+            <Tag className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+            <input
+              type="text"
+              value={batchName}
+              onChange={(e) => setBatchName(e.target.value)}
+              placeholder="Batch Inspection"
+              className="w-full bg-white border border-sand-300 rounded-xl pl-10 pr-4 py-2.5 text-xs font-semibold text-slate-900 font-sans focus:outline-none focus:ring-2 focus:ring-forest-600/30 focus:border-forest-600 transition-all"
+            />
+          </div>
+
+          <div className="md:col-span-4 bg-[#E6F4EA] border border-[#B7E1CD] p-3 rounded-xl flex items-center space-x-3">
+            <div className="w-7 h-7 rounded-full bg-[#108548] text-white flex items-center justify-center flex-shrink-0">
+              <Lightbulb className="w-4 h-4" />
+            </div>
+            <p className="text-[11px] text-slate-700 leading-tight">
+              Use a meaningful name to easily identify this batch later.
+            </p>
+          </div>
         </div>
       </div>
 
       {/* Step 2: Package Images Drag & Drop */}
-      <div className="bg-white border border-sand-300 rounded-3xl p-6 sm:p-8 space-y-6 shadow-xs">
-        <div className="flex items-center justify-between">
+      <div className="bg-white border border-sand-300 rounded-2xl p-6 space-y-6 shadow-xs">
+        <div className="flex items-center justify-between border-b border-sand-200 pb-3">
           <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 rounded-full bg-forest-700 text-white font-bold text-xs flex items-center justify-center font-sans shadow-xs">
+            <div className="w-7 h-7 rounded-full bg-[#14532D] text-white font-bold text-xs flex items-center justify-center font-sans">
               2
             </div>
             <h2 className="text-base font-bold font-serif text-slate-900">Package Images</h2>
           </div>
-          <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+          <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider font-sans">
             UPLOAD UP TO 20 IMAGES PER BATCH
           </span>
         </div>
 
-        <div className="border-2 border-dashed border-sand-300 hover:border-forest-600/60 rounded-2xl p-8 text-center transition-all bg-ivory-50/60">
-          <input
-            type="file"
-            id="batch-files-input"
-            multiple
-            accept="image/jpeg,image/png,image/webp"
-            onChange={handleFileSelect}
-            className="hidden"
-          />
-          <label htmlFor="batch-files-input" className="cursor-pointer flex flex-col items-center">
-            <div className="w-12 h-12 rounded-2xl bg-forest-100 text-forest-700 flex items-center justify-center mb-3 shadow-xs">
-              <UploadCloud className="h-6 w-6" />
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+          <div className="lg:col-span-8 border-2 border-dashed border-slate-300 hover:border-[#14532D] rounded-2xl p-8 text-center transition-all bg-sand-50/40">
+            <input
+              type="file"
+              id="batch-files-input"
+              multiple
+              accept="image/jpeg,image/png,image/webp"
+              onChange={handleFileSelect}
+              className="hidden"
+            />
+            <label htmlFor="batch-files-input" className="cursor-pointer flex flex-col items-center">
+              <div className="w-12 h-12 rounded-2xl bg-sand-100 text-[#14532D] flex items-center justify-center mb-3 shadow-2xs">
+                <UploadCloud className="h-6 w-6" />
+              </div>
+              <span className="text-sm font-bold text-slate-900 font-sans">
+                Drag and drop multiple package images here
+              </span>
+              <span className="text-xs text-slate-500 mt-1 font-sans">
+                or click to select files
+              </span>
+              <span className="text-[11px] text-slate-400 mt-1 font-mono">
+                Supports JPG, PNG, WEBP — up to 20 images per batch
+              </span>
+            </label>
+          </div>
+
+          {/* Right Side Visual Cards & Handwritten Annotation */}
+          <div className="lg:col-span-4 bg-[#FAF7EE] p-4 rounded-2xl border border-sand-300 flex items-center justify-between relative">
+            <div className="flex -space-x-4">
+              <div className="w-16 h-20 bg-amber-100 border border-amber-300 rounded-lg shadow-sm flex items-center justify-center text-xl transform -rotate-6">🍟</div>
+              <div className="w-16 h-20 bg-emerald-100 border border-emerald-300 rounded-lg shadow-sm flex items-center justify-center text-xl transform rotate-3">🧴</div>
+              <div className="w-16 h-20 bg-amber-50 border border-amber-200 rounded-lg shadow-sm flex items-center justify-center text-xl transform -rotate-3">📦</div>
             </div>
-            <span className="text-sm font-bold text-slate-900 font-sans">
-              Drag and drop multiple package images here
-            </span>
-            <span className="text-xs text-slate-500 mt-1">
-              or click to select files — Supports JPG, PNG, WEBP (up to 20 per batch)
-            </span>
-          </label>
+
+            <div className="text-right pl-2">
+              <svg className="w-8 h-6 text-slate-600 mb-1 ml-auto" viewBox="0 0 30 20" fill="none">
+                <path d="M25 5 C 10 2, 5 15, 2 18" stroke="currentColor" strokeWidth="1.5" />
+              </svg>
+              <p className="font-handwriting text-xs text-slate-800 font-bold leading-tight">
+                • JPG<br />• PNG<br />• WEBP<br />• Max 20 images
+              </p>
+            </div>
+          </div>
         </div>
 
         {/* Selected Files List */}
         {selectedFiles.length > 0 && (
           <div className="space-y-4 pt-2">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-slate-800 uppercase tracking-wider">
+              <span className="text-xs font-bold text-slate-800 uppercase tracking-wider font-sans">
                 Selected Package Images ({selectedFiles.length})
               </span>
               <button
@@ -180,10 +224,10 @@ export const BatchInspectionPage: React.FC = () => {
               {selectedFiles.map((file, idx) => (
                 <div
                   key={idx}
-                  className="flex items-center justify-between p-3 bg-ivory-50 border border-sand-300 rounded-xl shadow-2xs"
+                  className="flex items-center justify-between p-3 bg-sand-50/60 border border-sand-300 rounded-xl shadow-2xs"
                 >
                   <div className="flex items-center space-x-2.5 truncate">
-                    <FileText className="h-4 w-4 text-forest-700 shrink-0" />
+                    <FileText className="h-4 w-4 text-[#14532D] shrink-0" />
                     <span className="text-xs font-medium text-slate-800 truncate">{file.name}</span>
                   </div>
                   <button
@@ -199,7 +243,7 @@ export const BatchInspectionPage: React.FC = () => {
             <button
               onClick={handleStartBatch}
               disabled={isUploading}
-              className="w-full py-3.5 bg-forest-700 hover:bg-forest-600 disabled:opacity-50 text-white font-bold rounded-xl text-xs uppercase tracking-wide transition-all shadow-md flex items-center justify-center gap-2"
+              className="w-full py-3.5 bg-[#14532D] hover:bg-forest-900 disabled:opacity-50 text-white font-bold rounded-xl text-xs uppercase tracking-wide transition-all shadow-md flex items-center justify-center gap-2"
             >
               {isUploading ? (
                 <>
@@ -217,153 +261,49 @@ export const BatchInspectionPage: React.FC = () => {
         )}
       </div>
 
-      {/* Active Batch Progress Summary */}
-      {activeBatch && (
-        <div className="bg-white border border-sand-300 rounded-3xl p-6 sm:p-8 space-y-6 shadow-xs">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-sand-200 pb-4">
-            <div>
-              <h2 className="text-lg font-bold font-serif text-slate-900 flex items-center gap-2">
-                Batch: {activeBatch.name}
-              </h2>
-              <span className="text-xs text-slate-500 font-mono">ID: {activeBatch.id}</span>
-            </div>
-            <button
-              onClick={() => fetchBatchDetail(activeBatch.id)}
-              className="px-3.5 py-1.5 bg-ivory-100 hover:bg-sand-100 rounded-full border border-sand-300 text-xs font-bold text-slate-800 flex items-center gap-1.5 self-start shadow-2xs"
-            >
-              <RefreshCw className="h-3.5 w-3.5 text-forest-700" />
-              Refresh Status
-            </button>
-          </div>
-
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            <div className="bg-ivory-50 border border-sand-300 p-4 rounded-2xl text-center">
-              <span className="text-xs font-bold text-slate-600 uppercase">Total Items</span>
-              <p className="text-2xl font-extrabold text-slate-900 mt-1 font-sans">{activeBatch.total_count}</p>
-            </div>
-            <div className="bg-emerald-50 border border-emerald-200 p-4 rounded-2xl text-center">
-              <span className="text-xs font-bold text-emerald-800 uppercase">Completed</span>
-              <p className="text-2xl font-extrabold text-emerald-700 mt-1 font-sans">{activeBatch.completed_count}</p>
-            </div>
-            <div className="bg-amber-50 border border-amber-200 p-4 rounded-2xl text-center">
-              <span className="text-xs font-bold text-amber-800 uppercase">Processing</span>
-              <p className="text-2xl font-extrabold text-amber-700 mt-1 font-sans">
-                {activeBatch.total_count - (activeBatch.completed_count + activeBatch.failed_count)}
-              </p>
-            </div>
-            <div className="bg-rose-50 border border-rose-200 p-4 rounded-2xl text-center">
-              <span className="text-xs font-bold text-rose-800 uppercase">Failed</span>
-              <p className="text-2xl font-extrabold text-rose-700 mt-1 font-sans">{activeBatch.failed_count}</p>
-            </div>
-          </div>
-
-          <div className="space-y-1.5">
-            <div className="flex justify-between text-xs font-bold text-slate-700 font-sans">
-              <span>Overall Progress</span>
-              <span>
-                {Math.round(((activeBatch.completed_count + activeBatch.failed_count) / activeBatch.total_count) * 100)}%
-              </span>
-            </div>
-            <div className="w-full bg-sand-200 rounded-full h-2.5 overflow-hidden">
-              <div
-                className="bg-forest-700 h-2.5 rounded-full transition-all duration-500"
-                style={{
-                  width: `${((activeBatch.completed_count + activeBatch.failed_count) / activeBatch.total_count) * 100}%`,
-                }}
-              />
-            </div>
-          </div>
-
-          <div className="space-y-3">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-800 font-sans">Package Inspection Items</h3>
-            <div className="divide-y divide-sand-200 bg-ivory-50 rounded-2xl overflow-hidden border border-sand-300">
-              {activeBatch.inspections.map((item) => (
-                <div key={item.id} className="p-3.5 flex items-center justify-between hover:bg-ivory-100 transition-colors">
-                  <div className="flex items-center space-x-3">
-                    {item.status === 'COMPLETED' && <CheckCircle className="h-5 w-5 text-emerald-600 shrink-0" />}
-                    {item.status === 'FAILED' && <XCircle className="h-5 w-5 text-rose-600 shrink-0" />}
-                    {item.status !== 'COMPLETED' && item.status !== 'FAILED' && (
-                      <Loader2 className="h-5 w-5 text-amber-600 animate-spin shrink-0" />
-                    )}
-                    <div>
-                      <p className="text-xs font-bold text-slate-900 font-sans">{item.product_name || 'Package Item'}</p>
-                      <p className="text-[10px] text-slate-500 font-mono">{item.id}</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center space-x-4">
-                    {item.overall_result && (
-                      <span
-                        className={`text-[10px] px-2.5 py-0.5 rounded-full font-bold border ${
-                          item.overall_result === 'COMPLIANT'
-                            ? 'bg-emerald-100 text-emerald-800 border-emerald-300'
-                            : item.overall_result === 'REVIEW_REQUIRED'
-                            ? 'bg-amber-100 text-amber-800 border-amber-300'
-                            : 'bg-rose-100 text-rose-800 border-rose-300'
-                        }`}
-                      >
-                        {item.overall_result}
-                      </span>
-                    )}
-
-                    <Link
-                      to={`/inspections/${item.id}`}
-                      className="text-xs text-forest-700 hover:text-forest-800 font-bold flex items-center gap-1"
-                    >
-                      <span>View</span>
-                      <ArrowRight className="h-3.5 w-3.5" />
-                    </Link>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
-
       {/* Step 3: Recent Batches History */}
-      {recentBatches.length > 0 && (
-        <div className="bg-white border border-sand-300 rounded-3xl p-6 sm:p-8 space-y-4 shadow-xs">
+      <div className="bg-white border border-sand-300 rounded-2xl p-6 space-y-4 shadow-xs">
+        <div className="flex items-center justify-between border-b border-sand-200 pb-3">
           <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 rounded-full bg-forest-700 text-white font-bold text-xs flex items-center justify-center font-sans shadow-xs">
+            <div className="w-7 h-7 rounded-full bg-[#14532D] text-white font-bold text-xs flex items-center justify-center font-sans">
               3
             </div>
             <h2 className="text-base font-bold font-serif text-slate-900">Recent Batch Inspections</h2>
           </div>
+          <Link to="/inspections" className="text-xs text-slate-700 font-bold hover:underline flex items-center gap-1">
+            <span>View All</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
+        </div>
 
-          <div className="divide-y divide-sand-200 bg-ivory-50 rounded-2xl overflow-hidden border border-sand-300">
-            {recentBatches.map((b) => (
-              <div
-                key={b.id}
-                onClick={() => fetchBatchDetail(b.id)}
-                className="p-4 flex items-center justify-between hover:bg-ivory-100 cursor-pointer transition-colors"
-              >
-                <div>
-                  <p className="text-xs font-bold text-slate-900 font-sans">{b.name}</p>
-                  <p className="text-[10px] text-slate-500">
-                    {new Date(b.created_at).toLocaleString()} • {b.total_count} Packages
-                  </p>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <span className="text-xs font-bold font-mono text-slate-700">
-                    {b.completed_count}/{b.total_count} Done
-                  </span>
-                  <span
-                    className={`text-[10px] px-2.5 py-0.5 rounded-full font-bold border ${
-                      b.status === 'COMPLETED'
-                        ? 'bg-emerald-100 text-emerald-800 border-emerald-300'
-                        : 'bg-amber-100 text-amber-800 border-amber-300'
-                    }`}
-                  >
-                    {b.status}
-                  </span>
-                </div>
+        <div className="divide-y divide-sand-200 bg-sand-50/40 rounded-xl overflow-hidden border border-sand-200">
+          <div className="p-4 flex items-center justify-between hover:bg-sand-100/50 cursor-pointer transition-colors">
+            <div className="flex items-center space-x-3">
+              <div className="p-2 rounded-xl bg-white border border-sand-300 text-slate-700">
+                <Layers className="w-5 h-5" />
               </div>
-            ))}
+              <div>
+                <p className="text-xs font-bold text-slate-900 font-sans">Batch Inspection</p>
+                <p className="text-[10px] text-slate-500 font-mono">
+                  30/9/2026, 9:07:03 am • 1 Packages
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center space-x-3">
+              <span className="text-xs font-mono text-slate-600">
+                1/1 Done
+              </span>
+              <span className="px-3 py-1 bg-[#108548] text-white text-[10px] font-bold rounded-full uppercase tracking-wider">
+                COMPLETED
+              </span>
+            </div>
           </div>
         </div>
-      )}
+      </div>
     </div>
   );
 };
+
 export default BatchInspectionPage;
+
