@@ -6,10 +6,14 @@ import {
   Play,
   AlertCircle,
   Package,
-  Sparkles,
   Trash2,
   Image as ImageIcon,
   CheckCircle2,
+  FileText,
+  BarChart2,
+  ShieldCheck,
+  Utensils,
+  ArrowRight,
 } from 'lucide-react';
 import { inspectionApi } from '../services/inspection';
 import { ocrApi } from '../services/ocr';
@@ -17,7 +21,6 @@ import { extractionApi } from '../services/extraction';
 import { rulesApi } from '../services/rules';
 import { ImageType } from '../types/inspection';
 import { CameraCaptureModal } from '../components/CameraCaptureModal';
-import { PackageInspectionIllustration } from '../components/BrandingAssets';
 
 interface PackageImageFile {
   id: string;
@@ -34,7 +37,7 @@ export const NewInspectionPage: React.FC = () => {
 
   // Form state
   const [productName, setProductName] = useState('');
-  const [category, setCategory] = useState('FOOD');
+  const [category, setCategory] = useState('Food & Beverage');
 
   // Files state (supports both Upload and Camera capture)
   const [packageImages, setPackageImages] = useState<PackageImageFile[]>([]);
@@ -133,258 +136,264 @@ export const NewInspectionPage: React.FC = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto py-6 space-y-6">
-      {/* Page Header */}
+    <div className="space-y-6 py-2">
+      {/* Title Header */}
       <div className="text-center space-y-1">
-        <h1 className="text-3xl font-bold font-serif text-slate-900">New Commodity Inspection</h1>
+        <h1 className="text-3xl sm:text-4xl font-bold font-serif text-slate-900 tracking-tight">
+          New <span className="text-[#14532D]">Commodity</span> Inspection
+        </h1>
         <p className="text-xs text-slate-600 font-sans">
-          Upload or capture package images to run automated Legal Metrology screening.
-        </p>
-        <p className="font-handwriting text-lg text-forest-700 font-bold pt-1">
-          Scan Compliant Packs. Ensure Fair Markets.
+          Upload or capture package images to run automated legal Metrology screening.
         </p>
       </div>
 
-      {/* Workflow Step Bar */}
-      <div className="flex items-center justify-between bg-white border border-sand-300 rounded-2xl p-4 shadow-xs">
-        <div className={`flex items-center space-x-2.5 ${step >= 1 ? 'text-forest-800' : 'text-slate-400'}`}>
-          <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs ${step >= 1 ? 'bg-forest-700 text-white shadow-xs' : 'bg-sand-200 text-slate-500'}`}>
-            1
-          </div>
-          <span className="text-xs font-bold font-sans">Metadata</span>
+      {/* 3 Step Process Bar */}
+      <div className="max-w-2xl mx-auto flex items-center justify-between bg-sand-100/60 p-2.5 rounded-full border border-sand-300">
+        <div className={`flex items-center space-x-2 px-4 py-1.5 rounded-full font-bold text-xs ${step === 1 ? 'bg-[#14532D] text-white' : 'text-slate-600'}`}>
+          <span className="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center text-[10px]">1</span>
+          <FileText className="w-3.5 h-3.5" />
+          <span>Metadata</span>
         </div>
-        <div className="h-0.5 flex-1 bg-sand-200 mx-4" />
 
-        <div className={`flex items-center space-x-2.5 ${step >= 2 ? 'text-forest-800' : 'text-slate-400'}`}>
-          <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs ${step >= 2 ? 'bg-forest-700 text-white shadow-xs' : 'bg-sand-200 text-slate-500'}`}>
-            2
-          </div>
-          <span className="text-xs font-bold font-sans">Add Images</span>
+        <span className="text-slate-400 text-xs">⟶</span>
+
+        <div className={`flex items-center space-x-2 px-4 py-1.5 rounded-full font-bold text-xs ${step === 2 ? 'bg-[#14532D] text-white' : 'text-slate-600'}`}>
+          <span className="w-5 h-5 rounded-full bg-slate-300 text-slate-700 flex items-center justify-center text-[10px]">2</span>
+          <ImageIcon className="w-3.5 h-3.5" />
+          <span>Add Images</span>
         </div>
-        <div className="h-0.5 flex-1 bg-sand-200 mx-4" />
 
-        <div className={`flex items-center space-x-2.5 ${step >= 3 ? 'text-forest-800' : 'text-slate-400'}`}>
-          <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs ${step >= 3 ? 'bg-forest-700 text-white shadow-xs' : 'bg-sand-200 text-slate-500'}`}>
-            3
-          </div>
-          <span className="text-xs font-bold font-sans">Screening</span>
+        <span className="text-slate-400 text-xs">⟶</span>
+
+        <div className={`flex items-center space-x-2 px-4 py-1.5 rounded-full font-bold text-xs ${step === 3 ? 'bg-[#14532D] text-white' : 'text-slate-600'}`}>
+          <span className="w-5 h-5 rounded-full bg-slate-300 text-slate-700 flex items-center justify-center text-[10px]">3</span>
+          <ShieldCheck className="w-3.5 h-3.5" />
+          <span>Screening</span>
         </div>
       </div>
 
       {error && (
-        <div className="bg-rose-50 border border-rose-200 text-rose-800 p-3.5 rounded-xl text-xs flex items-center gap-2.5 shadow-xs">
+        <div className="bg-rose-50 border border-rose-200 text-rose-800 p-3.5 rounded-xl text-xs flex items-center gap-2.5 shadow-xs max-w-2xl mx-auto">
           <AlertCircle className="w-4 h-4 flex-shrink-0 text-rose-600" />
           <span className="font-medium">{error}</span>
         </div>
       )}
 
-      {/* Step 1: Commodity Metadata Form */}
-      {step === 1 && (
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
-          <div className="md:col-span-4 hidden md:block">
-            <PackageInspectionIllustration className="w-full shadow-sm" />
+      {/* Main Workspace Split */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+        {/* Left Side Packaging Scene */}
+        <div className="lg:col-span-4 relative flex flex-col items-center justify-center p-4">
+          <div className="text-center mb-3">
+            <p className="font-handwriting text-xl text-slate-800 font-bold leading-tight">
+              Scan<br />Compliant Packs<br />Ensure Fair Markets
+            </p>
+            <svg className="w-16 h-6 text-amber-500 mx-auto mt-1" viewBox="0 0 60 20" fill="none">
+              <path d="M5 5 C 25 18, 45 5, 55 15" stroke="currentColor" strokeWidth="2.5" />
+            </svg>
           </div>
 
-          <div className="md:col-span-8 bg-white border border-sand-300 rounded-3xl p-6 sm:p-8 space-y-5 shadow-xs">
-            <div className="flex items-center space-x-2 pb-2 border-b border-sand-200">
-              <Package className="w-5 h-5 text-forest-700" />
-              <h3 className="text-base font-bold font-serif text-slate-900">Commodity Metadata</h3>
+          <div className="relative bg-[#FAF7EE] p-3 rounded-2xl border border-sand-300 shadow-md w-full max-w-xs">
+            <div className="bg-amber-100 rounded-xl p-4 border border-amber-300 text-center space-y-2">
+              <div className="w-10 h-10 rounded-full bg-[#14532D] text-white mx-auto flex items-center justify-center font-bold text-sm">
+                🌱
+              </div>
+              <p className="font-serif font-bold text-slate-900 text-sm">FarmBite</p>
+              <p className="text-xs font-bold text-amber-900 uppercase tracking-wider">ROASTED ALMONDS</p>
+              <div className="w-24 h-16 bg-amber-200/80 rounded-full mx-auto flex items-center justify-center text-2xl">
+                🌰
+              </div>
+              <p className="text-[10px] text-slate-600 font-mono">Net Quantity: 500 g</p>
             </div>
 
-            <form onSubmit={handleCreateInspection} className="space-y-4">
-              <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5 font-sans">
-                  Product Name *
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={productName}
-                  onChange={(e) => setProductName(e.target.value)}
-                  placeholder="e.g. Premium Roasted Almonds 500g"
-                  className="w-full px-4 py-2.5 bg-ivory-50 border border-sand-300 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-forest-600/30 focus:border-forest-600 transition-all font-sans"
-                />
+            {/* Float Tags */}
+            <div className="absolute -left-4 top-6 bg-white px-2.5 py-1 rounded-xl shadow-md border border-sand-300 text-[10px] font-bold text-slate-800 flex items-center space-x-1.5">
+              <span className="w-2 h-2 rounded-full bg-emerald-500" />
+              <span>Scan Labels with AI OCR</span>
+            </div>
+
+            <div className="absolute -left-2 top-24 bg-white px-2.5 py-1 rounded-xl shadow-md border border-sand-300 text-[10px] font-bold text-slate-800 flex items-center space-x-1.5">
+              <CheckCircle2 className="w-3 h-3 text-[#14532D]" />
+              <span>Verify Declarations</span>
+            </div>
+
+            <div className="absolute -left-4 top-40 bg-white px-2.5 py-1 rounded-xl shadow-md border border-sand-300 text-[10px] font-bold text-slate-800 flex items-center space-x-1.5">
+              <span className="text-xs">⚖️</span>
+              <span>Ensure Compliance</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Center Main Form Card */}
+        <div className="lg:col-span-5 bg-white border border-sand-300 rounded-3xl p-6 sm:p-8 space-y-6 shadow-sm">
+          {step === 1 && (
+            <>
+              <div className="flex items-center space-x-3 pb-3 border-b border-sand-200">
+                <div className="w-8 h-8 rounded-xl bg-sage-100 text-[#14532D] flex items-center justify-center">
+                  <FileText className="w-4 h-4" />
+                </div>
+                <h3 className="text-lg font-bold font-serif text-slate-900">Commodity Metadata</h3>
               </div>
 
-              <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5 font-sans">
-                  Category
-                </label>
-                <select
-                  value={category}
-                  onChange={(e) => setCategory(e.target.value)}
-                  className="w-full px-4 py-2.5 bg-ivory-50 border border-sand-300 rounded-xl text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-forest-600/30 focus:border-forest-600 transition-all font-sans"
+              <form onSubmit={handleCreateInspection} className="space-y-4">
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-800 mb-1.5 font-sans">
+                    PRODUCT NAME *
+                  </label>
+                  <div className="relative">
+                    <Package className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                    <input
+                      type="text"
+                      required
+                      value={productName}
+                      onChange={(e) => setProductName(e.target.value)}
+                      placeholder="e.g. Premium Roasted Almonds 500g"
+                      className="w-full pl-10 pr-4 py-2.5 bg-sand-50/50 border border-sand-300 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-forest-600/30 focus:border-forest-600 transition-all font-sans"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-800 mb-1.5 font-sans">
+                    CATEGORY
+                  </label>
+                  <div className="relative">
+                    <Utensils className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                    <select
+                      value={category}
+                      onChange={(e) => setCategory(e.target.value)}
+                      className="w-full pl-10 pr-4 py-2.5 bg-sand-50/50 border border-sand-300 rounded-xl text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-forest-600/30 focus:border-forest-600 transition-all font-sans appearance-none"
+                    >
+                      <option value="Food & Beverage">Food & Beverage</option>
+                      <option value="Cosmetics">Cosmetics & Personal Care</option>
+                      <option value="Pharmaceuticals">Pharmaceuticals</option>
+                      <option value="Electronics">Electronics & Appliances</option>
+                      <option value="General Package">General Packaged Goods</option>
+                    </select>
+                  </div>
+                </div>
+
+                <button
+                  type="submit"
+                  className="w-full bg-[#14532D] hover:bg-forest-900 text-white font-bold py-3.5 rounded-xl shadow-md transition-all text-xs tracking-wide flex items-center justify-center gap-2 mt-4"
                 >
-                  <option value="FOOD">Food & Beverage</option>
-                  <option value="COSMETICS">Cosmetics & Personal Care</option>
-                  <option value="PHARMA">Pharmaceuticals</option>
-                  <option value="ELECTRONICS">Electronics & Appliances</option>
-                  <option value="GENERAL">General Packaged Goods</option>
+                  <span>Continue to Package Images</span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+              </form>
+            </>
+          )}
+
+          {step === 2 && (
+            <div className="space-y-4">
+              <div className="flex items-center justify-between pb-3 border-b border-sand-200">
+                <h3 className="text-base font-bold font-serif text-slate-900">Package Images</h3>
+                <select
+                  value={currentSurfaceType}
+                  onChange={(e) => setCurrentSurfaceType(e.target.value as ImageType)}
+                  className="bg-sand-50 border border-sand-300 rounded-lg text-xs font-bold text-slate-800 px-3 py-1.5"
+                >
+                  <option value="FRONT">FRONT</option>
+                  <option value="BACK">BACK</option>
+                  <option value="SIDE">SIDE</option>
                 </select>
               </div>
 
+              <div className="grid grid-cols-2 gap-3">
+                <label className="border border-sand-300 rounded-xl p-4 text-center bg-sand-50/40 hover:bg-sand-100/40 cursor-pointer flex flex-col items-center">
+                  <UploadCloud className="w-6 h-6 text-[#14532D] mb-1" />
+                  <span className="text-xs font-bold text-slate-800">Browse File</span>
+                  <input type="file" multiple onChange={handleFileUpload} className="hidden" />
+                </label>
+
+                <button
+                  onClick={() => setIsCameraOpen(true)}
+                  className="border border-sand-300 rounded-xl p-4 text-center bg-sand-50/40 hover:bg-sand-100/40 flex flex-col items-center"
+                >
+                  <Camera className="w-6 h-6 text-[#14532D] mb-1" />
+                  <span className="text-xs font-bold text-slate-800">Camera</span>
+                </button>
+              </div>
+
               <button
-                type="submit"
-                className="w-full bg-forest-700 hover:bg-forest-600 text-white font-bold py-3 rounded-xl shadow-md shadow-forest-900/20 transition-all text-xs tracking-wide uppercase mt-4"
+                onClick={handleUploadImages}
+                disabled={uploading || packageImages.length === 0}
+                className="w-full bg-[#14532D] hover:bg-forest-900 disabled:opacity-50 text-white font-bold py-3.5 rounded-xl shadow-md transition-all text-xs tracking-wide"
               >
-                Continue to Package Images →
+                {uploading ? 'Uploading...' : `Proceed to Screening (${packageImages.length})`}
               </button>
-            </form>
-          </div>
-        </div>
-      )}
 
-      {/* Step 2: Image Selection (Dual Mode: Upload OR Live Camera) */}
-      {step === 2 && (
-        <div className="bg-white border border-sand-300 rounded-3xl p-6 sm:p-8 space-y-6 shadow-xs">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-sand-200 pb-4">
-            <div>
-              <h3 className="text-base font-bold font-serif text-slate-900 flex items-center gap-2">
-                <ImageIcon className="w-5 h-5 text-forest-700" />
-                <span>Package Images & Label Surfaces</span>
-              </h3>
-              <p className="text-xs text-slate-500 font-sans">
-                Provide package surface images via File Upload or Live Camera Stream.
-              </p>
-            </div>
-
-            <div className="flex items-center space-x-2">
-              <span className="text-xs font-bold text-slate-700 uppercase tracking-wider">Surface Type:</span>
-              <select
-                value={currentSurfaceType}
-                onChange={(e) => setCurrentSurfaceType(e.target.value as ImageType)}
-                className="bg-ivory-100 border border-sand-300 rounded-lg text-xs font-bold text-slate-800 px-3 py-1.5 focus:outline-none"
-              >
-                <option value="FRONT">FRONT</option>
-                <option value="BACK">BACK</option>
-                <option value="SIDE">SIDE</option>
-                <option value="TOP">TOP</option>
-                <option value="BOTTOM">BOTTOM</option>
-              </select>
-            </div>
-          </div>
-
-          {/* Action Choice Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="border border-sand-300 rounded-2xl p-6 text-center bg-ivory-50/80 hover:bg-ivory-100 transition-all flex flex-col items-center justify-center space-y-3">
-              <div className="w-12 h-12 rounded-2xl bg-forest-100 text-forest-700 border border-forest-200 flex items-center justify-center shadow-xs">
-                <UploadCloud className="w-6 h-6" />
-              </div>
-              <div>
-                <p className="text-xs font-bold text-slate-900 uppercase tracking-wider">Upload Image File</p>
-                <p className="text-[11px] text-slate-500">Select JPG, PNG, or WEBP package files</p>
-              </div>
-              <input
-                type="file"
-                multiple
-                accept="image/jpeg,image/png,image/webp"
-                onChange={handleFileUpload}
-                className="hidden"
-                id="package-file-input"
+              <CameraCaptureModal
+                isOpen={isCameraOpen}
+                onClose={() => setIsCameraOpen(false)}
+                onCaptureConfirm={handleCameraCaptureConfirm}
               />
-              <label
-                htmlFor="package-file-input"
-                className="cursor-pointer bg-forest-700 hover:bg-forest-600 text-white text-xs font-bold px-4 py-2.5 rounded-full shadow-xs transition-all inline-flex items-center gap-2"
-              >
-                <UploadCloud className="w-4 h-4" />
-                <span>Browse Files</span>
-              </label>
             </div>
+          )}
 
-            <div className="border border-sand-300 rounded-2xl p-6 text-center bg-ivory-50/80 hover:bg-ivory-100 transition-all flex flex-col items-center justify-center space-y-3">
-              <div className="w-12 h-12 rounded-2xl bg-forest-100 text-forest-700 border border-forest-200 flex items-center justify-center shadow-xs">
-                <Camera className="w-6 h-6" />
+          {step === 3 && (
+            <div className="text-center space-y-4 py-4">
+              <ShieldCheck className="w-12 h-12 text-[#14532D] mx-auto" />
+              <h3 className="text-xl font-bold font-serif text-slate-900">Run Automated Screening</h3>
+              {processing ? (
+                <p className="text-xs font-mono font-bold text-[#14532D]">{processStatus}</p>
+              ) : (
+                <button
+                  onClick={handleRunPipeline}
+                  className="bg-[#14532D] hover:bg-forest-900 text-white font-bold px-8 py-3 rounded-full shadow-md text-xs"
+                >
+                  Start Screening
+                </button>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* Right Side Feature Pills & Annotation */}
+        <div className="lg:col-span-3 space-y-4 text-left">
+          <div className="space-y-3">
+            <div className="flex items-center space-x-3 p-3 bg-white/80 rounded-2xl border border-sand-300 shadow-2xs">
+              <div className="w-9 h-9 rounded-full bg-sage-100 text-[#14532D] flex items-center justify-center flex-shrink-0">
+                <FileText className="w-4 h-4" />
               </div>
               <div>
-                <p className="text-xs font-bold text-slate-900 uppercase tracking-wider">Capture with Camera</p>
-                <p className="text-[11px] text-slate-500">Use live web camera feed</p>
+                <p className="text-xs font-bold text-slate-900">Automated</p>
+                <p className="text-[10px] text-slate-500">Legal Metrology Screening</p>
               </div>
-              <button
-                type="button"
-                onClick={() => setIsCameraOpen(true)}
-                className="bg-forest-700 hover:bg-forest-600 text-white text-xs font-bold px-4 py-2.5 rounded-full shadow-xs transition-all inline-flex items-center gap-2"
-              >
-                <Camera className="w-4 h-4" />
-                <span>Open Live Camera</span>
-              </button>
+            </div>
+
+            <div className="flex items-center space-x-3 p-3 bg-white/80 rounded-2xl border border-sand-300 shadow-2xs">
+              <div className="w-9 h-9 rounded-full bg-sage-100 text-[#14532D] flex items-center justify-center flex-shrink-0">
+                <BarChart2 className="w-4 h-4" />
+              </div>
+              <div>
+                <p className="text-xs font-bold text-slate-900">Data-Driven</p>
+                <p className="text-[10px] text-slate-500">Compliance</p>
+              </div>
+            </div>
+
+            <div className="flex items-center space-x-3 p-3 bg-white/80 rounded-2xl border border-sand-300 shadow-2xs">
+              <div className="w-9 h-9 rounded-full bg-sage-100 text-[#14532D] flex items-center justify-center flex-shrink-0">
+                <ShieldCheck className="w-4 h-4" />
+              </div>
+              <div>
+                <p className="text-xs font-bold text-slate-900">Support</p>
+                <p className="text-[10px] text-slate-500">Fair Markets</p>
+              </div>
             </div>
           </div>
 
-          {/* Uploaded Package Images Grid */}
-          {packageImages.length > 0 && (
-            <div className="space-y-3 pt-4 border-t border-sand-200">
-              <h4 className="text-xs font-bold text-slate-800 uppercase tracking-wider font-sans">
-                Attached Package Surfaces ({packageImages.length})
-              </h4>
-
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                {packageImages.map((img) => (
-                  <div key={img.id} className="relative bg-ivory-50 rounded-xl overflow-hidden border border-sand-300 shadow-xs group">
-                    <img src={img.previewUrl} alt="Package surface" className="w-full h-28 object-cover" />
-                    <div className="p-1.5 bg-white flex items-center justify-between text-[10px] border-t border-sand-200">
-                      <span className="font-bold text-forest-700 font-mono">{img.imageType}</span>
-                      <span className="text-slate-500 uppercase">{img.source}</span>
-                    </div>
-
-                    <button
-                      onClick={() => handleRemoveImage(img.id)}
-                      className="absolute top-1 right-1 p-1.5 bg-rose-600 text-white rounded-lg opacity-0 group-hover:opacity-100 transition-opacity shadow-xs"
-                      title="Remove image"
-                    >
-                      <Trash2 className="w-3.5 h-3.5" />
-                    </button>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          <button
-            onClick={handleUploadImages}
-            disabled={uploading || packageImages.length === 0}
-            className="w-full bg-forest-700 hover:bg-forest-600 disabled:opacity-50 text-white font-bold py-3 rounded-xl shadow-md transition-all text-xs uppercase tracking-wide mt-4"
-          >
-            {uploading ? 'Processing & Uploading Images...' : `Proceed to Screening (${packageImages.length} images) →`}
-          </button>
-
-          <CameraCaptureModal
-            isOpen={isCameraOpen}
-            onClose={() => setIsCameraOpen(false)}
-            onCaptureConfirm={handleCameraCaptureConfirm}
-          />
-        </div>
-      )}
-
-      {/* Step 3: Run Pipeline */}
-      {step === 3 && (
-        <div className="bg-white border border-sand-300 rounded-3xl p-8 text-center space-y-6 shadow-xs">
-          <div className="w-16 h-16 rounded-2xl bg-forest-100 border border-forest-200 flex items-center justify-center mx-auto text-forest-700 shadow-xs">
-            <Sparkles className="w-8 h-8" />
-          </div>
-
-          <div className="space-y-1">
-            <h3 className="text-2xl font-bold font-serif text-slate-900">Execute Compliance Screening</h3>
-            <p className="text-xs text-slate-600 font-sans max-w-md mx-auto">
-              Runs OpenCV deskewing, fallback OCR engines, statutory field extraction matchers, and Legal Metrology Rule Engine.
+          <div className="pt-2">
+            <p className="font-handwriting text-sm text-slate-800 font-bold leading-tight">
+              'Accurate Labels<br />Informed Consumers<br />Stronger Markets'
             </p>
+            <svg className="w-16 h-4 text-amber-500 mt-1" viewBox="0 0 60 16" fill="none">
+              <path d="M5 5 Q 30 15 55 5" stroke="currentColor" strokeWidth="2" />
+            </svg>
           </div>
-
-          {processing ? (
-            <div className="space-y-3 py-6">
-              <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-forest-700 mx-auto" />
-              <p className="text-xs font-mono font-bold text-forest-700">{processStatus}</p>
-            </div>
-          ) : (
-            <button
-              onClick={handleRunPipeline}
-              className="bg-forest-700 hover:bg-forest-600 text-white font-bold px-8 py-3.5 rounded-full shadow-lg shadow-forest-900/20 transition-all text-xs uppercase tracking-wide inline-flex items-center gap-2"
-            >
-              <Play className="w-4 h-4 fill-white" />
-              <span>Start Automated Screening</span>
-            </button>
-          )}
         </div>
-      )}
+      </div>
     </div>
   );
 };
+export default NewInspectionPage;
+
