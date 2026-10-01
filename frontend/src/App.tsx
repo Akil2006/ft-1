@@ -79,7 +79,7 @@ export default function App() {
           path="/register"
           element={
             <Layout user={user} onLogout={() => setUser(null)} showSidebar={false}>
-              <RegisterPage />
+              <RegisterPage onRegisterSuccess={fetchUser} />
             </Layout>
           }
         />

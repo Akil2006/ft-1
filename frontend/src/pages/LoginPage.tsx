@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import {
   Lock,
   Mail,
@@ -28,8 +28,11 @@ interface LoginPageProps {
 
 export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
   const navigate = useNavigate();
-  const [email, setEmail] = useState('harini@gmail.com');
-  const [password, setPassword] = useState('password123');
+  const location = useLocation();
+  const stateEmail = (location.state as any)?.email;
+
+  const [email, setEmail] = useState(stateEmail || '');
+  const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);

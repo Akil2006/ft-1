@@ -10,25 +10,41 @@ import {
 } from '../components/BrandingAssets';
 import { DisclaimerBanner } from '../components/DisclaimerBanner';
 
-export const RegisterPage: React.FC = () => {
+interface RegisterPageProps {
+  onRegisterSuccess?: () => void;
+}
+
+export const RegisterPage: React.FC<RegisterPageProps> = ({ onRegisterSuccess }) => {
   const navigate = useNavigate();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const [isAlreadyRegistered, setIsAlreadyRegistered] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+    setIsAlreadyRegistered(false);
     setLoading(true);
 
     try {
+      // 1. Register new user
       await authApi.register({ name, email, password });
-      navigate('/login');
+
+      // 2. Auto-login immediately for seamless user onboarding
+      await authApi.login({ email, password });
+      if (onRegisterSuccess) onRegisterSuccess();
+      navigate('/dashboard');
     } catch (err: any) {
-      const msg = err.response?.data?.detail || 'Registration failed. Email might be in use.';
-      setError(msg);
+      const detail = err.response?.data?.detail;
+      if (detail && (detail.includes('already exists') || err.response?.status === 409)) {
+        setIsAlreadyRegistered(true);
+        setError(`An inspector account for "${email}" is already registered. Click below to sign in directly!`);
+      } else {
+        setError(detail || 'Registration failed. Please check your details and try again.');
+      }
     } finally {
       setLoading(false);
     }
@@ -149,9 +165,23 @@ export const RegisterPage: React.FC = () => {
             </div>
 
             {error && (
-              <div className="bg-rose-50 border border-rose-200 text-rose-800 p-3.5 rounded-xl text-xs flex items-center gap-2.5 shadow-xs">
-                <AlertCircle className="w-4 h-4 shrink-0 text-rose-600" />
-                <span className="font-medium">{error}</span>
+              <div className="bg-rose-50 border border-rose-200 text-rose-800 p-4 rounded-xl text-xs space-y-2.5 shadow-xs">
+                <div className="flex items-center gap-2.5 font-medium">
+                  <AlertCircle className="w-4 h-4 shrink-0 text-rose-600" />
+                  <span>{error}</span>
+                </div>
+                {isAlreadyRegistered && (
+                  <div className="pt-1">
+                    <button
+                      type="button"
+                      onClick={() => navigate('/login', { state: { email } })}
+                      className="bg-[#14532D] hover:bg-[#0F392B] text-white px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all shadow-xs cursor-pointer inline-flex items-center gap-1.5"
+                    >
+                      <span>Sign In with {email}</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                )}
               </div>
             )}
 

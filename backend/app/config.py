@@ -19,10 +19,15 @@ class Settings(BaseSettings):
     OCR_ENGINE: str = "easyocr"
     OCR_FALLBACK_ENABLED: bool = True
 
-    MAX_UPLOAD_SIZE_MB: int = 10
-    CORS_ORIGINS: List[str] = ["http://localhost:5173", "http://localhost:3000", "http://127.0.0.1:5173"]
-
-    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
+    CORS_ORIGINS: List[str] = [
+        "http://localhost:5173",
+        "http://localhost:5174",
+        "http://localhost:5175",
+        "http://localhost:3000",
+        "http://127.0.0.1:5173",
+        "http://127.0.0.1:5174",
+        "http://127.0.0.1:5175",
+    ]
 
 settings = Settings()
 
