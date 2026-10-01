@@ -77,16 +77,61 @@
     "section_number": "Rule 9",
     "title": "Manner in which Declarations shall be Made",
     "text": "All declarations specified under these rules shall be legible, prominent, definite, and plain. The background and color of letters must contrast sharply with the background of the package to ensure high visibility.",
-    "keywords": ["legibility", "contrast", "visibility", "prominent", "font size", "declarations manner"],
+    "keywords": ["legibility", "contrast", "visibility", "prominent", "font size", "declarations manner", "readable", "background"],
     "summary": "Mandates legibility, high color contrast, and clear visibility for all packaging declarations."
+  },
+  {
+    "id": "LMR-2011-RULE-8",
+    "act_or_rule": "Legal Metrology (Packaged Commodities) Rules, 2011",
+    "section_number": "Rule 8",
+    "title": "Minimum Height of Numerals and Letters (Font Size)",
+    "text": "The minimum height of numerals and letters for net quantity and MRP declarations depends on package size: Net quantity up to 50g/ml requires minimum 1.0mm height (2.0mm for blown/molded); 50g-200g requires 2.0mm (4.0mm blown); 200g-1kg requires 4.0mm; above 1kg requires 6.0mm minimum numeral height.",
+    "keywords": ["font size", "numeral height", "letter height", "minimum height", "text size", "dimension", "legibility size"],
+    "summary": "Prescribes minimum height in millimeters for declaration letters and numerals according to net quantity."
+  },
+  {
+    "id": "LMR-2011-RULE-18-2",
+    "act_or_rule": "Legal Metrology (Packaged Commodities) Rules, 2011",
+    "section_number": "Rule 18(2)",
+    "title": "Prohibition of Dual MRP and Overcharging",
+    "text": "No person shall declare different maximum retail prices on an identical pre-packaged commodity. Furthermore, no retailer, distributor, or e-commerce entity shall charge a price higher than the declared Maximum Retail Price (MRP).",
+    "keywords": ["dual mrp", "overcharging", "higher price", "identical commodity", "charging extra", "price gouging"],
+    "summary": "Strictly prohibits charging above declared MRP or declaring dual MRPs for identical products."
+  },
+  {
+    "id": "LMR-2011-RULE-6-10-ECOMM",
+    "act_or_rule": "Legal Metrology (Packaged Commodities) Rules, 2011",
+    "section_number": "Rule 6(10) & E-Commerce Mandates",
+    "title": "E-Commerce Mandatory Declarations",
+    "text": "An e-commerce entity shall ensure that the mandatory declarations including Country of Origin, Manufacturer, Net Quantity, Best Before / Expiry date, and MRP are displayed on the digital and electronic network used for e-commerce transactions prior to purchase.",
+    "keywords": ["e-commerce", "online marketplace", "digital", "amazon", "flipkart", "website listing", "online selling"],
+    "summary": "Mandates all statutory label declarations to be visible to consumers on digital marketplaces before purchase."
+  },
+  {
+    "id": "LMR-2011-RULE-26",
+    "act_or_rule": "Legal Metrology (Packaged Commodities) Rules, 2011",
+    "section_number": "Rule 26",
+    "title": "Exemptions for Pre-packaged Commodities",
+    "text": "Nothing in these rules shall apply to packages containing food articles or commodities of net weight or measure of 10 grams or 10 milliliters or less, packages of commodities meant for fast food items packed by restaurant/hotel, or packages containing agricultural farm produce exceeding 50 kg.",
+    "keywords": ["exemptions", "small package", "10 grams", "10 ml", "hotel", "restaurant", "sample pack", "wholesale package"],
+    "summary": "Provides exemptions for tiny packages (<=10g or 10ml) and hotel/restaurant service parcels."
   },
   {
     "id": "LMA-2009-SEC-36",
     "act_or_rule": "Legal Metrology Act, 2009",
     "section_number": "Section 36",
     "title": "Penalty for Selling Non-Standard Packages",
-    "text": "Whoever manufactures, packs, imports, sells, or distributes any pre-packaged commodity which does not conform to the declarations on the package shall be punished with a fine which may extend to twenty-five thousand rupees, and for second or subsequent offense, with fine up to fifty thousand rupees or imprisonment up to one year.",
-    "keywords": ["penalty", "fine", "non-compliance", "offense", "imprisonment", "enforcement", "violation"],
-    "summary": "Outlines fines up to ₹25,000 for first offense and up to ₹50,000 / 1 year imprisonment for repeat offenses."
+    "text": "Whoever manufactures, packs, imports, sells, or distributes any pre-packaged commodity which does not conform to the declarations on the package shall be punished with a fine which may extend to twenty-five thousand rupees, and for second offense up to fifty thousand rupees, and for subsequent offenses with fine up to one lakh rupees or imprisonment up to one year, or both.",
+    "keywords": ["penalty", "fine", "non-compliance", "offense", "imprisonment", "enforcement", "violation", "punishment", "court"],
+    "summary": "Outlines statutory fines up to ₹25,000 for first offense, ₹50,000 for second, and up to ₹1 Lakh / 1 year imprisonment for repeat offenses."
+  },
+  {
+    "id": "LMA-2009-SEC-39",
+    "act_or_rule": "Legal Metrology Act, 2009",
+    "section_number": "Section 39",
+    "title": "Offenses by Companies and Liability of Directors",
+    "text": "Where an offense under this Act has been committed by a company, the person nominated by the company to be in charge of business, and in the absence of nomination every director and manager, shall be deemed to be guilty of the offense and shall be liable to be proceeded against and punished.",
+    "keywords": ["company", "director liability", "manager", "nominated person", "corporate offense", "prosecution"],
+    "summary": "Holds nominated company officials, directors, and managers personally liable for violations of packaged commodity rules."
   }
 ]

@@ -10,11 +10,18 @@ class RegulatorySectionResponse(BaseModel):
     summary: str
     relevance_score: float
 
+class ChatMessage(BaseModel):
+    role: str # "user" or "assistant"
+    content: str
+
 class RegulatoryQueryRequest(BaseModel):
-    query: str = Field(..., min_length=2, description="Question regarding Legal Metrology rules")
+    query: str = Field(..., min_length=1, description="Question regarding Legal Metrology rules")
+    history: Optional[List[ChatMessage]] = None
 
 class RegulatoryQueryResponse(BaseModel):
     query: str
     answer: str
-    matched_sections: List[RegulatorySectionResponse]
+    matched_sections: List[RegulatorySectionResponse] = []
     disclaimer: str
+    suggested_followups: Optional[List[str]] = []
+

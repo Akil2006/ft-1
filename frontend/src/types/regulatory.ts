@@ -13,4 +13,15 @@ export interface RegulatoryQueryResponse {
   answer: string;
   matched_sections: RegulatorySection[];
   disclaimer: string;
+  suggested_followups?: string[];
 }
+
+export interface ChatMessage {
+  id: string;
+  role: 'user' | 'assistant';
+  content: string;
+  timestamp: string;
+  matched_sections?: RegulatorySection[];
+  suggested_followups?: string[];
+}
+

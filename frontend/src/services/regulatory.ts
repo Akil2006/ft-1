@@ -2,8 +2,8 @@ import { apiClient } from './api';
 import { RegulatoryQueryResponse, RegulatorySection } from '../types/regulatory';
 
 export const regulatoryService = {
-  queryAssistant: async (query: string): Promise<RegulatoryQueryResponse> => {
-    const response = await apiClient.post<RegulatoryQueryResponse>('/regulatory/query', { query });
+  queryAssistant: async (query: string, history?: Array<{ role: string; content: string }>): Promise<RegulatoryQueryResponse> => {
+    const response = await apiClient.post<RegulatoryQueryResponse>('/regulatory/query', { query, history });
     return response.data;
   },
 

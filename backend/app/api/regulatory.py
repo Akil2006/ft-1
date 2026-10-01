@@ -13,7 +13,7 @@ def query_regulatory(
     current_user: User = Depends(get_current_user)
 ):
     """Query grounded Legal Metrology assistant for rule clarifications and legal provisions."""
-    return regulatory_service.query_regulatory_assistant(request.query)
+    return regulatory_service.query_regulatory_assistant(request.query, request.history)
 
 @router.get("/sections", response_model=List[RegulatorySectionResponse])
 def get_regulatory_sections(
