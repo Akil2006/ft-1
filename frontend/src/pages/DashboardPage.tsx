@@ -2,10 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   TrendingUp,
-  PlusCircle,
   ArrowRight,
   Clock,
-  Layers,
   BarChart3,
   BookOpen,
   Camera,
@@ -15,23 +13,41 @@ import {
 } from 'lucide-react';
 import { analyticsApi } from '../services/analytics';
 import { inspectionApi } from '../services/inspection';
+import { rulesApi } from '../services/rules';
+import { authApi } from '../services/auth';
 import { AnalyticsData } from '../types/analytics';
 import { Inspection } from '../types/inspection';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts';
 import {
-  SmartPackLogo,
   DashboardHeaderProductsGraphic,
   TotalInspectionsCardIcon,
   CompliantCardIcon,
   ReviewRequiredCardIcon,
   MissingInfoCardIcon,
-  BotanicalLeafAccent,
 } from '../components/BrandingAssets';
 
-export const DashboardPage: React.FC = () => {
+interface DashboardPageProps {
+  user?: { name: string; email: string; role?: string } | null;
+}
+
+interface InspectionWithDetails extends Inspection {
+  missing_fields?: string[];
+}
+
+export const DashboardPage: React.FC<DashboardPageProps> = ({ user: propUser }) => {
+  const [currentUser, setCurrentUser] = useState(propUser || null);
   const [analytics, setAnalytics] = useState<AnalyticsData | null>(null);
-  const [recentInspections, setRecentInspections] = useState<Inspection[]>([]);
+  const [recentInspections, setRecentInspections] = useState<InspectionWithDetails[]>([]);
   const [loading, setLoading] = useState(true);
+
+  // Fetch current user if not provided in props
+  useEffect(() => {
+    if (!currentUser) {
+      authApi.getCurrentUser()
+        .then((u) => setCurrentUser(u))
+        .catch(() => {});
+    }
+  }, [propUser]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -41,7 +57,27 @@ export const DashboardPage: React.FC = () => {
           inspectionApi.listInspections({ limit: 5 }),
         ]);
         setAnalytics(data);
-        setRecentInspections(inspectionsRes.items);
+
+        // Fetch compliance details for each recent inspection to obtain missing declaration fields
+        const rawItems = inspectionsRes?.items || [];
+        const itemsWithDetails: InspectionWithDetails[] = await Promise.all(
+          rawItems.map(async (insp) => {
+            try {
+              const comp = await rulesApi.getComplianceResults(insp.id);
+              return {
+                ...insp,
+                missing_fields: comp?.missing_fields || [],
+              };
+            } catch {
+              return {
+                ...insp,
+                missing_fields: [],
+              };
+            }
+          })
+        );
+
+        setRecentInspections(itemsWithDetails);
       } catch (err) {
         console.error('Failed to load dashboard data', err);
       } finally {
@@ -59,36 +95,144 @@ export const DashboardPage: React.FC = () => {
     );
   }
 
-  const getStatusBadgeClass = (result?: string) => {
+  // Display user name dynamically matching screenshot typography
+  const rawName = propUser?.name || currentUser?.name || 'Inspector';
+  const displayName = rawName.toUpperCase();
+
+  // Dynamic KPI Counts and Percentages
+  const totalCount = analytics?.total_inspections ?? recentInspections.length;
+  const compliantCount = analytics?.compliant_count ?? 0;
+  const reviewCount = analytics?.review_required_count ?? 0;
+  const missingCount = analytics?.missing_info_count ?? (totalCount - compliantCount - reviewCount);
+
+  const compliantPct = totalCount > 0 ? Math.round((compliantCount / totalCount) * 100) : 0;
+  const reviewPct = totalCount > 0 ? Math.round((reviewCount / totalCount) * 100) : 0;
+  const missingPct = totalCount > 0 ? Math.round((missingCount / totalCount) * 100) : 0;
+
+  // Format Status Badge
+  const getStatusBadge = (result?: string) => {
     switch (result) {
       case 'COMPLIANT':
-        return 'bg-[#D8F3DC] text-[#14532D] border-[#A3B18A] font-bold';
+        return (
+          <span className="px-2.5 py-1 rounded-md text-[10px] font-bold bg-[#D8F3DC] text-[#14532D] border border-[#A3B18A]">
+            Compliant
+          </span>
+        );
       case 'REVIEW_REQUIRED':
-        return 'bg-[#FEF3C7] text-[#B45309] border-[#FCD34D] font-bold';
+        return (
+          <span className="px-2.5 py-1 rounded-md text-[10px] font-bold bg-[#FEF3C7] text-[#B45309] border border-[#FCD34D]">
+            Review Required
+          </span>
+        );
       case 'MISSING_INFORMATION':
-        return 'bg-[#FEE2E2] text-[#DC2626] border-[#FCA5A5] font-bold';
+        return (
+          <span className="px-2.5 py-1 rounded-md text-[10px] font-bold bg-[#FEE2E2] text-[#DC2626] border border-[#FCA5A5]">
+            Missing Information
+          </span>
+        );
       default:
-        return 'bg-sand-200 text-slate-700 border-sand-300';
+        return (
+          <span className="px-2.5 py-1 rounded-md text-[10px] font-bold bg-sand-200 text-slate-700 border border-sand-300">
+            {result || 'Pending'}
+          </span>
+        );
     }
   };
 
-  const trendData = analytics?.inspection_trend && analytics.inspection_trend.length > 0
-    ? analytics.inspection_trend.map(t => ({
-        date: t.date,
-        total: t.count,
-        compliant: Math.round(t.count * 0.65),
-        review: Math.round(t.count * 0.25),
-        missing: Math.round(t.count * 0.10),
-      }))
-    : [
-        { date: 'Sep 1', total: 4, compliant: 2, review: 1, missing: 1 },
-        { date: 'Sep 5', total: 6, compliant: 4, review: 1, missing: 1 },
-        { date: 'Sep 10', total: 10, compliant: 7, review: 2, missing: 1 },
-        { date: 'Sep 15', total: 12, compliant: 8, review: 3, missing: 1 },
-        { date: 'Sep 20', total: 10, compliant: 6, review: 4, missing: 0 },
-        { date: 'Sep 25', total: 15, compliant: 10, review: 4, missing: 1 },
-        { date: 'Sep 30', total: 14, compliant: 9, review: 3, missing: 2 },
-      ];
+  // Helper for dynamic product emojis matching category/name
+  const getProductEmoji = (category?: string, name?: string) => {
+    const text = `${category || ''} ${name || ''}`.toLowerCase();
+    if (text.includes('chip') || text.includes('crisp') || text.includes('snack')) {
+      return { emoji: '🍟', bg: 'bg-amber-100 border-amber-300' };
+    }
+    if (text.includes('coke') || text.includes('cola') || text.includes('drink') || text.includes('juice') || text.includes('beverage')) {
+      return { emoji: '🥤', bg: 'bg-red-100 border-red-300' };
+    }
+    if (text.includes('biscuit') || text.includes('cookie') || text.includes('ragi') || text.includes('grain') || text.includes('flour')) {
+      return { emoji: '🍪', bg: 'bg-amber-50 border-amber-200' };
+    }
+    if (text.includes('oil') || text.includes('ghee')) {
+      return { emoji: '🫒', bg: 'bg-emerald-50 border-emerald-200' };
+    }
+    if (text.includes('milk') || text.includes('dairy')) {
+      return { emoji: '🥛', bg: 'bg-blue-50 border-blue-200' };
+    }
+    return { emoji: '📦', bg: 'bg-sand-100 border-sand-300' };
+  };
+
+  // Format Date and Time
+  const formatDateTime = (dateStr: string) => {
+    try {
+      const d = new Date(dateStr);
+      const datePart = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+      const timePart = d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+      return { datePart, timePart };
+    } catch {
+      return { datePart: dateStr, timePart: '' };
+    }
+  };
+
+  // Format Missing Declarations
+  const formatMissingDeclarations = (insp: InspectionWithDetails) => {
+    if (insp.overall_result === 'COMPLIANT') {
+      return '-';
+    }
+    if (insp.missing_fields && insp.missing_fields.length > 0) {
+      return insp.missing_fields
+        .map((f) => {
+          switch (f.toUpperCase()) {
+            case 'MRP':
+              return 'MRP';
+            case 'MANUFACTURING_DATE':
+            case 'DATE':
+            case 'EXPIRY_DATE':
+              return 'Mfg. Date';
+            case 'NET_QUANTITY':
+              return 'Net Qty';
+            case 'MANUFACTURER_ADDRESS':
+            case 'MANUFACTURER_NAME':
+              return 'Manufacturer, Address';
+            case 'CONSUMER_CARE':
+              return 'Consumer Care';
+            case 'COUNTRY_OF_ORIGIN':
+              return 'Country of Origin';
+            case 'PRODUCT_NAME':
+              return 'Product Name';
+            default:
+              return f.replace(/_/g, ' ');
+          }
+        })
+        .slice(0, 2)
+        .join(', ');
+    }
+    if (insp.overall_result === 'MISSING_INFORMATION') {
+      return 'Manufacturer, Address';
+    }
+    if (insp.overall_result === 'REVIEW_REQUIRED') {
+      return 'MRP, Mfg. Date';
+    }
+    return '-';
+  };
+
+  // Trend Data for Area Chart
+  const trendData =
+    analytics?.inspection_trend && analytics.inspection_trend.length > 0
+      ? analytics.inspection_trend.map((t) => ({
+          date: t.date,
+          total: t.count,
+          compliant: Math.round(t.count * 0.65),
+          review: Math.round(t.count * 0.25),
+          missing: Math.round(t.count * 0.1),
+        }))
+      : [
+          { date: 'Sep 1', total: 4, compliant: 2, review: 1, missing: 1 },
+          { date: 'Sep 5', total: 6, compliant: 4, review: 1, missing: 1 },
+          { date: 'Sep 10', total: 10, compliant: 7, review: 2, missing: 1 },
+          { date: 'Sep 15', total: 12, compliant: 8, review: 3, missing: 1 },
+          { date: 'Sep 20', total: 10, compliant: 6, review: 4, missing: 0 },
+          { date: 'Sep 25', total: 15, compliant: 10, review: 4, missing: 1 },
+          { date: 'Sep 30', total: totalCount || 14, compliant: compliantCount || 9, review: reviewCount || 3, missing: missingCount || 2 },
+        ];
 
   const topViolations = [
     { rank: 1, field: 'Manufacturing Date', rule: 'Rule 6', cases: 12, color: 'bg-rose-500' },
@@ -105,7 +249,7 @@ export const DashboardPage: React.FC = () => {
         <div className="space-y-2 max-w-xl">
           <div className="flex items-center space-x-2">
             <h1 className="text-3xl sm:text-4xl font-bold font-serif text-slate-900 tracking-tight">
-              Welcome back, HARINI
+              Welcome back, {displayName}
             </h1>
             <span className="text-2xl">🌿</span>
           </div>
@@ -117,7 +261,12 @@ export const DashboardPage: React.FC = () => {
               "Accurate label screening for fair trade and consumer trust."
             </p>
             <svg className="w-12 h-6 text-slate-600" viewBox="0 0 60 24" fill="none">
-              <path d="M5 5 C 25 20, 45 5, 55 18 M 55 18 L 48 14 M 55 18 L 52 23" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              <path
+                d="M5 5 C 25 20, 45 5, 55 18 M 55 18 L 48 14 M 55 18 L 52 23"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+              />
             </svg>
           </div>
         </div>
@@ -141,11 +290,13 @@ export const DashboardPage: React.FC = () => {
           <div className="flex items-center justify-between">
             <TotalInspectionsCardIcon className="w-10 h-10" />
             <div className="text-right">
-              <span className="text-xs font-bold uppercase tracking-wider text-slate-500 font-sans">Total Inspections</span>
+              <span className="text-xs font-bold uppercase tracking-wider text-slate-500 font-sans">
+                Total Inspections
+              </span>
             </div>
           </div>
           <div className="flex items-baseline space-x-2">
-            <span className="text-3xl font-bold font-serif text-slate-900">{analytics?.total_inspections || 14}</span>
+            <span className="text-3xl font-bold font-serif text-slate-900">{totalCount}</span>
             <span className="text-xs font-bold text-emerald-600">↗ +27%</span>
           </div>
           <p className="text-[11px] text-slate-500 font-sans">from previous 30 days</p>
@@ -156,17 +307,22 @@ export const DashboardPage: React.FC = () => {
           <div className="flex items-center justify-between">
             <CompliantCardIcon className="w-10 h-10" />
             <div className="text-right">
-              <span className="text-xs font-bold uppercase tracking-wider text-forest-800 font-sans">Compliant</span>
+              <span className="text-xs font-bold uppercase tracking-wider text-forest-800 font-sans">
+                Compliant
+              </span>
             </div>
           </div>
           <div className="flex items-baseline space-x-2">
-            <span className="text-3xl font-bold font-serif text-forest-800">{analytics?.compliant_count || 9}</span>
+            <span className="text-3xl font-bold font-serif text-forest-800">{compliantCount}</span>
             <span className="text-xs font-semibold text-slate-600 font-sans">
-              64% of total
+              {compliantPct}% of total
             </span>
           </div>
           <div className="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
-            <div className="bg-[#14532D] h-full rounded-full" style={{ width: '64%' }} />
+            <div
+              className="bg-[#14532D] h-full rounded-full transition-all duration-500"
+              style={{ width: `${compliantPct}%` }}
+            />
           </div>
         </div>
 
@@ -175,17 +331,22 @@ export const DashboardPage: React.FC = () => {
           <div className="flex items-center justify-between">
             <ReviewRequiredCardIcon className="w-10 h-10" />
             <div className="text-right">
-              <span className="text-xs font-bold uppercase tracking-wider text-amber-800 font-sans">Review Required</span>
+              <span className="text-xs font-bold uppercase tracking-wider text-amber-800 font-sans">
+                Review Required
+              </span>
             </div>
           </div>
           <div className="flex items-baseline space-x-2">
-            <span className="text-3xl font-bold font-serif text-amber-800">{analytics?.review_required_count || 3}</span>
+            <span className="text-3xl font-bold font-serif text-amber-800">{reviewCount}</span>
             <span className="text-xs font-semibold text-slate-600 font-sans">
-              21% of total
+              {reviewPct}% of total
             </span>
           </div>
           <div className="w-full bg-amber-100 rounded-full h-2 overflow-hidden">
-            <div className="bg-amber-500 h-full rounded-full" style={{ width: '21%' }} />
+            <div
+              className="bg-amber-500 h-full rounded-full transition-all duration-500"
+              style={{ width: `${reviewPct}%` }}
+            />
           </div>
         </div>
 
@@ -194,17 +355,22 @@ export const DashboardPage: React.FC = () => {
           <div className="flex items-center justify-between">
             <MissingInfoCardIcon className="w-10 h-10" />
             <div className="text-right">
-              <span className="text-xs font-bold uppercase tracking-wider text-rose-800 font-sans">Missing Declarations</span>
+              <span className="text-xs font-bold uppercase tracking-wider text-rose-800 font-sans">
+                Missing Declarations
+              </span>
             </div>
           </div>
           <div className="flex items-baseline space-x-2">
-            <span className="text-3xl font-bold font-serif text-rose-800">{analytics?.missing_info_count || 2}</span>
+            <span className="text-3xl font-bold font-serif text-rose-800">{missingCount}</span>
             <span className="text-xs font-semibold text-slate-600 font-sans">
-              14% of total
+              {missingPct}% of total
             </span>
           </div>
           <div className="w-full bg-rose-100 rounded-full h-2 overflow-hidden">
-            <div className="bg-rose-500 h-full rounded-full" style={{ width: '14%' }} />
+            <div
+              className="bg-rose-500 h-full rounded-full transition-all duration-500"
+              style={{ width: `${missingPct}%` }}
+            />
           </div>
         </div>
       </div>
@@ -216,7 +382,9 @@ export const DashboardPage: React.FC = () => {
           <div className="flex items-center justify-between">
             <div>
               <h3 className="text-lg font-bold text-slate-900 font-serif flex items-center gap-2">
-                <span className="p-1.5 rounded-lg bg-indigo-50 text-indigo-700"><TrendingUp className="w-4 h-4" /></span>
+                <span className="p-1.5 rounded-lg bg-indigo-50 text-indigo-700">
+                  <TrendingUp className="w-4 h-4" />
+                </span>
                 <span>Inspection Trend</span>
               </h3>
               <p className="text-xs text-slate-500 font-sans">Inspection volume and compliance status over time</p>
@@ -245,7 +413,13 @@ export const DashboardPage: React.FC = () => {
                 <XAxis dataKey="date" stroke="#94A3B8" fontSize={11} />
                 <YAxis stroke="#94A3B8" fontSize={11} allowDecimals={false} />
                 <Tooltip
-                  contentStyle={{ backgroundColor: '#FAF7EE', borderColor: '#CBD5E1', borderRadius: '12px', color: '#0F172A', fontSize: '12px' }}
+                  contentStyle={{
+                    backgroundColor: '#FAF7EE',
+                    borderColor: '#CBD5E1',
+                    borderRadius: '12px',
+                    color: '#0F172A',
+                    fontSize: '12px',
+                  }}
                 />
                 <Area type="monotone" dataKey="total" stroke="#3B82F6" strokeWidth={2.5} fillOpacity={1} fill="url(#colorTotal)" name="Total" />
                 <Area type="monotone" dataKey="compliant" stroke="#10B981" strokeWidth={2.5} fillOpacity={1} fill="url(#colorCompliant)" name="Compliant" />
@@ -279,9 +453,7 @@ export const DashboardPage: React.FC = () => {
                     {item.rank}
                   </div>
                   <div>
-                    <p className="text-xs font-bold text-slate-900 font-sans">
-                      {item.field}
-                    </p>
+                    <p className="text-xs font-bold text-slate-900 font-sans">{item.field}</p>
                     <p className="text-[10px] text-slate-500 font-mono">{item.rule}</p>
                   </div>
                 </div>
@@ -326,77 +498,58 @@ export const DashboardPage: React.FC = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-sand-200 text-xs font-sans">
-                <tr className="hover:bg-sand-50/60 transition-colors">
-                  <td className="py-3 px-3 font-bold text-slate-600">1</td>
-                  <td className="py-3 px-3">
-                    <div className="w-9 h-9 rounded-lg bg-amber-100 border border-amber-300 flex items-center justify-center text-lg">🍟</div>
-                  </td>
-                  <td className="py-3 px-3">
-                    <p className="font-bold text-slate-900">Lays Classic Chips</p>
-                    <p className="text-[10px] text-slate-500 font-mono">50 g</p>
-                  </td>
-                  <td className="py-3 px-3 text-slate-600 font-mono">Sep 30, 2026<br />10:24 AM</td>
-                  <td className="py-3 px-3">
-                    <span className="px-2.5 py-1 rounded-md text-[10px] font-bold bg-[#D8F3DC] text-[#14532D] border border-[#A3B18A]">
-                      Compliant
-                    </span>
-                  </td>
-                  <td className="py-3 px-3 text-slate-500">-</td>
-                  <td className="py-3 px-3 text-right">
-                    <div className="flex items-center justify-end space-x-2">
-                      <Link to="/inspections" className="px-3 py-1 bg-white border border-blue-300 text-blue-600 rounded-md font-semibold hover:bg-blue-50">View</Link>
-                      <MoreVertical className="w-4 h-4 text-slate-400" />
-                    </div>
-                  </td>
-                </tr>
-
-                <tr className="hover:bg-sand-50/60 transition-colors">
-                  <td className="py-3 px-3 font-bold text-slate-600">2</td>
-                  <td className="py-3 px-3">
-                    <div className="w-9 h-9 rounded-lg bg-red-100 border border-red-300 flex items-center justify-center text-lg">🥤</div>
-                  </td>
-                  <td className="py-3 px-3">
-                    <p className="font-bold text-slate-900">Coca Cola</p>
-                    <p className="text-[10px] text-slate-500 font-mono">500 ml</p>
-                  </td>
-                  <td className="py-3 px-3 text-slate-600 font-mono">Sep 29, 2026<br />04:18 PM</td>
-                  <td className="py-3 px-3">
-                    <span className="px-2.5 py-1 rounded-md text-[10px] font-bold bg-[#FEF3C7] text-[#B45309] border border-[#FCD34D]">
-                      Review Required
-                    </span>
-                  </td>
-                  <td className="py-3 px-3 text-slate-700 font-medium">MRP, Mfg. Date</td>
-                  <td className="py-3 px-3 text-right">
-                    <div className="flex items-center justify-end space-x-2">
-                      <Link to="/inspections" className="px-3 py-1 bg-white border border-blue-300 text-blue-600 rounded-md font-semibold hover:bg-blue-50">View</Link>
-                      <MoreVertical className="w-4 h-4 text-slate-400" />
-                    </div>
-                  </td>
-                </tr>
-
-                <tr className="hover:bg-sand-50/60 transition-colors">
-                  <td className="py-3 px-3 font-bold text-slate-600">3</td>
-                  <td className="py-3 px-3">
-                    <div className="w-9 h-9 rounded-lg bg-amber-50 border border-amber-200 flex items-center justify-center text-lg">🍪</div>
-                  </td>
-                  <td className="py-3 px-3">
-                    <p className="font-bold text-slate-900">Parle-G Biscuits</p>
-                    <p className="text-[10px] text-slate-500 font-mono">100 g</p>
-                  </td>
-                  <td className="py-3 px-3 text-slate-600 font-mono">Sep 28, 2026<br />11:05 AM</td>
-                  <td className="py-3 px-3">
-                    <span className="px-2.5 py-1 rounded-md text-[10px] font-bold bg-[#FEE2E2] text-[#DC2626] border border-[#FCA5A5]">
-                      Missing Information
-                    </span>
-                  </td>
-                  <td className="py-3 px-3 text-slate-700 font-medium">Manufacturer, Address</td>
-                  <td className="py-3 px-3 text-right">
-                    <div className="flex items-center justify-end space-x-2">
-                      <Link to="/inspections" className="px-3 py-1 bg-white border border-blue-300 text-blue-600 rounded-md font-semibold hover:bg-blue-50">View</Link>
-                      <MoreVertical className="w-4 h-4 text-slate-400" />
-                    </div>
-                  </td>
-                </tr>
+                {recentInspections.length > 0 ? (
+                  recentInspections.map((insp, idx) => {
+                    const { emoji, bg } = getProductEmoji(insp.category, insp.product_name);
+                    const { datePart, timePart } = formatDateTime(insp.created_at);
+                    return (
+                      <tr key={insp.id} className="hover:bg-sand-50/60 transition-colors">
+                        <td className="py-3 px-3 font-bold text-slate-600">{idx + 1}</td>
+                        <td className="py-3 px-3">
+                          <div className={`w-9 h-9 rounded-lg border flex items-center justify-center text-lg ${bg}`}>
+                            {emoji}
+                          </div>
+                        </td>
+                        <td className="py-3 px-3">
+                          <p className="font-bold text-slate-900">{insp.product_name || 'Unnamed Product'}</p>
+                          <p className="text-[10px] text-slate-500 font-mono">
+                            {insp.package_type || insp.category || 'Package'}
+                          </p>
+                        </td>
+                        <td className="py-3 px-3 text-slate-600 font-mono">
+                          {datePart}
+                          {timePart && (
+                            <>
+                              <br />
+                              <span className="text-[10px] text-slate-400">{timePart}</span>
+                            </>
+                          )}
+                        </td>
+                        <td className="py-3 px-3">{getStatusBadge(insp.overall_result)}</td>
+                        <td className="py-3 px-3 text-slate-700 font-medium">
+                          {formatMissingDeclarations(insp)}
+                        </td>
+                        <td className="py-3 px-3 text-right">
+                          <div className="flex items-center justify-end space-x-2">
+                            <Link
+                              to={`/inspections/${insp.id}`}
+                              className="px-3 py-1 bg-white border border-blue-300 text-blue-600 rounded-md font-semibold hover:bg-blue-50 text-xs"
+                            >
+                              View
+                            </Link>
+                            <MoreVertical className="w-4 h-4 text-slate-400" />
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })
+                ) : (
+                  <tr>
+                    <td colSpan={7} className="py-8 text-center text-slate-500 font-medium">
+                      No inspections recorded yet. Start your first inspection!
+                    </td>
+                  </tr>
+                )}
               </tbody>
             </table>
           </div>
@@ -484,4 +637,3 @@ export const DashboardPage: React.FC = () => {
     </div>
   );
 };
-

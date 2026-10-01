@@ -34,22 +34,6 @@ export const Navbar: React.FC<NavbarProps> = ({ user, onLogout }) => {
             </Link>
           </div>
 
-          {/* Center Search Bar (Shortcut Ctrl+K) */}
-          <div className="hidden md:flex items-center flex-1 max-w-md mx-6">
-            <div className="relative w-full">
-              <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
-              <input
-                type="text"
-                placeholder="Search inspections, products, or rules..."
-                className="w-full bg-ivory-100/90 border border-sand-300 rounded-full pl-9 pr-14 py-1.5 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-forest-600/30 focus:border-forest-600 transition-all"
-                readOnly
-                onClick={() => navigate('/inspections')}
-              />
-              <kbd className="absolute right-3 top-1/2 -translate-y-1/2 bg-white border border-sand-300 rounded px-1.5 py-0.5 text-[10px] font-mono text-slate-400 shadow-2xs">
-                Ctrl + K
-              </kbd>
-            </div>
-          </div>
 
           {/* Right Header Actions */}
           <div className="flex items-center space-x-4">

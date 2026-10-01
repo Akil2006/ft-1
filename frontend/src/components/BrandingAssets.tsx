@@ -46,19 +46,14 @@ export const SmartPackLogo: React.FC<{ compact?: boolean; className?: string; li
 export const AshokaEmblemIllustration: React.FC<{ className?: string }> = ({ className = 'w-10 h-14' }) => {
   return (
     <svg className={className} viewBox="0 0 100 140" fill="none" xmlns="http://www.w3.org/2000/svg">
-      {/* Lions Top Silhouette */}
       <path d="M30 40 C 30 20, 45 10, 50 10 C 55 10, 70 20, 70 40 C 70 50, 60 55, 50 55 C 40 55, 30 50, 30 40 Z" fill="#14532D" opacity="0.85" />
       <circle cx="50" cy="25" r="8" fill="#14532D" />
       <path d="M38 35 Q 50 30 62 35 Q 50 45 38 35 Z" fill="#FAF7EE" />
-      {/* Abacus Base */}
       <rect x="25" y="60" width="50" height="15" rx="2" fill="#14532D" />
-      {/* Ashoka Chakra */}
       <circle cx="50" cy="67.5" r="5" stroke="#FAF7EE" strokeWidth="1.5" />
       <path d="M50 62.5 L50 72.5 M45 67.5 L55 67.5" stroke="#FAF7EE" strokeWidth="1" />
-      {/* Bull and Horse Accents */}
       <circle cx="33" cy="67.5" r="2.5" fill="#FAF7EE" />
       <circle cx="67" cy="67.5" r="2.5" fill="#FAF7EE" />
-      {/* Pedestal & Motto 'Satyameva Jayate' in Devanagari style */}
       <path d="M20 78 L80 78 L75 92 L25 92 Z" fill="#14532D" opacity="0.9" />
       <text x="50" y="87" fill="#FAF7EE" fontSize="7" fontWeight="bold" textAnchor="middle" fontFamily="serif">
         सत्यमेव जयते
@@ -71,7 +66,6 @@ export const AshokaEmblemIllustration: React.FC<{ className?: string }> = ({ cla
 export const DashboardHeaderProductsGraphic: React.FC<{ className?: string }> = ({ className = 'w-64 h-32' }) => {
   return (
     <svg className={className} viewBox="0 0 320 160" fill="none" xmlns="http://www.w3.org/2000/svg">
-      {/* Background Soft Shadow */}
       <ellipse cx="160" cy="145" rx="140" ry="12" fill="#E2DBC8" opacity="0.6" />
       
       {/* Stand-up Pouch Bag (Green Organic Food) */}
@@ -108,7 +102,6 @@ export const DashboardHeaderProductsGraphic: React.FC<{ className?: string }> = 
 export const BatchPackageConveyorGraphic: React.FC<{ className?: string }> = ({ className = 'w-72 h-32' }) => {
   return (
     <svg className={className} viewBox="0 0 360 160" fill="none" xmlns="http://www.w3.org/2000/svg">
-      {/* Conveyor Belt Track */}
       <rect x="10" y="125" width="340" height="20" rx="4" fill="#475569" />
       <circle cx="30" cy="135" r="6" fill="#94A3B8" />
       <circle cx="80" cy="135" r="6" fill="#94A3B8" />
@@ -118,24 +111,19 @@ export const BatchPackageConveyorGraphic: React.FC<{ className?: string }> = ({ 
       <circle cx="280" cy="135" r="6" fill="#94A3B8" />
       <circle cx="330" cy="135" r="6" fill="#94A3B8" />
 
-      {/* Stand-up Pouch Bag */}
       <path d="M40 50 L75 42 L85 125 L35 125 Z" fill="#D97706" />
       <rect x="45" y="65" width="30" height="40" rx="3" fill="#FAF7EE" />
 
-      {/* Tea Box */}
       <rect x="100" y="60" width="45" height="65" rx="4" fill="#14532D" />
       <circle cx="122.5" cy="90" r="12" fill="#D8F3DC" />
 
-      {/* Potato Chips Bag */}
       <path d="M160 40 Q 185 32 210 40 L215 125 Q 185 130 155 125 Z" fill="#DC2626" />
       <ellipse cx="185" cy="80" rx="18" ry="14" fill="#FAF7EE" />
       <text x="185" y="84" fill="#DC2626" fontSize="9" fontWeight="bold" textAnchor="middle" fontFamily="sans-serif">Chips</text>
 
-      {/* Oil Bottle */}
       <rect x="235" y="35" width="12" height="10" rx="2" fill="#B45309" />
       <path d="M230 45 L252 45 L256 125 L226 125 Z" fill="#F59E0B" />
 
-      {/* Shipping Master Box */}
       <rect x="270" y="55" width="70" height="70" rx="4" fill="#D97706" opacity="0.9" />
       <line x1="305" y1="55" x2="305" y2="125" stroke="#78350F" strokeWidth="2" strokeDasharray="4 2" />
       <rect x="280" y="75" width="30" height="25" fill="#FAF7EE" />
@@ -279,4 +267,71 @@ export const MetrologyScaleIllustration: React.FC<{ className?: string }> = ({ c
   );
 };
 
+// 14. FarmBite Potato Chips Classic Salted Pouch Graphic (For Login / Register Scene)
+export const FarmBitePotatoChipsPouchIllustration: React.FC<{ className?: string }> = ({ className = 'w-64 h-80' }) => {
+  return (
+    <div className={`relative ${className}`}>
+      {/* Pouch Silhouette */}
+      <svg className="w-full h-full drop-shadow-xl" viewBox="0 0 220 280" fill="none" xmlns="http://www.w3.org/2000/svg">
+        {/* Main Pouch Shape */}
+        <path d="M30 40 Q 110 25 190 40 L200 260 Q 110 275 20 260 Z" fill="#FCE7F3" opacity="0.3" />
+        <path d="M30 40 Q 110 25 190 40 L200 250 Q 110 265 20 250 Z" fill="#FCD34D" />
 
+        {/* Top Seal Crimps */}
+        <path d="M25 40 Q 110 25 195 40 L190 48 Q 110 33 30 48 Z" fill="#D97706" />
+
+        {/* Center Label Area */}
+        <rect x="40" y="65" width="140" height="150" rx="16" fill="#FAF7EE" stroke="#F59E0B" strokeWidth="2" />
+
+        {/* Brand Leaf Logo */}
+        <circle cx="110" cy="90" r="14" fill="#E6F4EA" />
+        <path d="M110 80 Q 118 90 110 100 Q 102 90 110 80 Z" fill="#14532D" />
+
+        {/* Brand Name */}
+        <text x="110" y="115" fill="#14532D" fontSize="18" fontWeight="bold" textAnchor="middle" fontFamily="serif">FarmBite</text>
+        <text x="110" y="132" fill="#B45309" fontSize="11" fontWeight="bold" textAnchor="middle" letterSpacing="1">POTATO CHIPS</text>
+        <text x="110" y="145" fill="#92400E" fontSize="9" textAnchor="middle">CLASSIC SALTED</text>
+
+        {/* Potato Chips Visual */}
+        <ellipse cx="110" cy="175" rx="35" ry="22" fill="#FBBF24" stroke="#D97706" strokeWidth="1.5" />
+        <ellipse cx="90" cy="170" rx="20" ry="14" fill="#FCD34D" stroke="#D97706" strokeWidth="1.5" />
+        <ellipse cx="130" cy="170" rx="20" ry="14" fill="#FCD34D" stroke="#D97706" strokeWidth="1.5" />
+
+        {/* Net Qty Declaration */}
+        <text x="110" y="202" fill="#475569" fontSize="8" textAnchor="middle" fontFamily="monospace">Net Quantity</text>
+        <text x="110" y="212" fill="#0F172A" fontSize="11" fontWeight="bold" textAnchor="middle" fontFamily="sans-serif">200 g</text>
+      </svg>
+    </div>
+  );
+};
+
+// 15. Storefront Sketch Graphic (Bottom Right Login/Register Page)
+export const StorefrontSketchIllustration: React.FC<{ className?: string }> = ({ className = 'w-64 h-36' }) => {
+  return (
+    <svg className={className} viewBox="0 0 240 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+      {/* Roof Awning Canopy */}
+      <path d="M20 30 L220 30 L210 15 L30 15 Z" stroke="#334155" strokeWidth="1.5" fill="#F1F5F9" />
+      <path d="M20 30 C30 40, 40 40, 50 30 C60 40, 70 40, 80 30 C90 40, 100 40, 110 30 C120 40, 130 40, 140 30 C150 40, 160 40, 170 30 C180 40, 190 40, 200 30 C210 40, 220 40, 220 30" stroke="#334155" strokeWidth="1.5" fill="none" />
+
+      {/* Main Store Structure Window Frame */}
+      <rect x="30" y="40" width="180" height="70" stroke="#334155" strokeWidth="1.5" fill="none" />
+
+      {/* Shelves inside Store */}
+      <line x1="30" y1="62" x2="210" y2="62" stroke="#475569" strokeWidth="1" strokeDasharray="3 2" />
+      <line x1="30" y1="84" x2="210" y2="84" stroke="#475569" strokeWidth="1" strokeDasharray="3 2" />
+
+      {/* Jar & Packaging Jars on Shelves */}
+      <rect x="45" y="48" width="10" height="14" rx="2" stroke="#334155" strokeWidth="1" fill="#E2E8F0" />
+      <rect x="60" y="50" width="12" height="12" rx="2" stroke="#334155" strokeWidth="1" fill="#E2E8F0" />
+      <rect x="80" y="46" width="14" height="16" rx="2" stroke="#334155" strokeWidth="1" fill="#E2E8F0" />
+      <rect x="140" y="48" width="12" height="14" rx="2" stroke="#334155" strokeWidth="1" fill="#E2E8F0" />
+      <rect x="160" y="50" width="10" height="12" rx="2" stroke="#334155" strokeWidth="1" fill="#E2E8F0" />
+
+      {/* Shopping Cart Outline */}
+      <path d="M5 95 L15 95 L25 115 L45 115" stroke="#334155" strokeWidth="1.5" fill="none" />
+      <rect x="18" y="98" width="22" height="12" stroke="#334155" strokeWidth="1" fill="none" />
+      <circle cx="25" cy="117" r="2.5" fill="#334155" />
+      <circle cx="40" cy="117" r="2.5" fill="#334155" />
+    </svg>
+  );
+};

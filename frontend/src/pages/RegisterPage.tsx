@@ -1,8 +1,14 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { User as UserIcon, Mail, Lock, AlertCircle, CheckCircle2, ShieldCheck, Check } from 'lucide-react';
+import { User as UserIcon, Mail, Lock, AlertCircle, ArrowRight, CheckSquare, Search } from 'lucide-react';
 import { authApi } from '../services/auth';
-import { PackageInspectionIllustration, LegalRuleBooksIllustration, FairTradeStamp } from '../components/BrandingAssets';
+import {
+  SmartPackLogo,
+  LegalRuleBooksIllustration,
+  FairTradeStamp,
+  BotanicalLeafAccent,
+} from '../components/BrandingAssets';
+import { DisclaimerBanner } from '../components/DisclaimerBanner';
 
 export const RegisterPage: React.FC = () => {
   const navigate = useNavigate();
@@ -28,159 +34,215 @@ export const RegisterPage: React.FC = () => {
     }
   };
 
-  const statutoryDeclarations = [
-    'MRP (Maximum Retail Price)',
-    'Net Quantity & Unit Verification',
-    'Month & Year of Manufacture / Packing',
-    'Manufacturer / Packer / Importer Details',
-    'Country of Origin (For Imported Commodities)',
-    'Consumer Care Contact & Address',
+  const checklistItems = [
+    'MRP',
+    'Net Quantity',
+    'Manufacturing Date',
+    'Manufacturer Details',
+    'Country of Origin',
+    'Consumer Care',
   ];
 
   return (
-    <div className="max-w-5xl mx-auto py-8">
-      <div className="bg-white/80 backdrop-blur-md border border-sand-300 rounded-3xl shadow-xl overflow-hidden grid grid-cols-1 lg:grid-cols-12 min-h-[540px]">
-        {/* LEFT PANEL: Inspection Checklist & Environment Graphic */}
-        <div className="lg:col-span-6 bg-gradient-to-br from-ivory-100 via-sand-100 to-sage-100 p-8 flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-sand-300/80 relative">
-          <div className="space-y-4">
-            <div className="inline-flex items-center space-x-2 px-3 py-1 bg-forest-100 text-forest-800 text-xs font-semibold rounded-full border border-forest-200">
-              <ShieldCheck className="w-3.5 h-3.5 text-forest-600" />
-              <span>JOIN SMARTPACK INSPECTION PORTAL</span>
-            </div>
-
-            <h2 className="text-3xl font-bold font-serif text-slate-900 leading-tight">
-              Screen Packaging against Statutory Metrology Rules
-            </h2>
-
-            <p className="text-xs text-slate-600 leading-relaxed font-sans">
-              Register an authorized inspector workspace to process packaged commodities, execute automated rule screening, and generate tamper-evident evidence reports.
-            </p>
-
-            {/* Checklist Box */}
-            <div className="bg-white/90 rounded-2xl p-4 border border-sand-300 shadow-xs space-y-2.5 my-2">
-              <p className="text-xs font-bold text-slate-900 uppercase tracking-wider font-sans border-b border-sand-200 pb-1.5">
-                Statutory Inspection Scope:
+    <div className="max-w-7xl mx-auto py-4 font-sans relative overflow-hidden">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start min-h-[620px]">
+        {/* LEFT COLUMN: Legal Metrology Inspection Desk Environment */}
+        <div className="lg:col-span-6 space-y-6 relative">
+          {/* Logo & Motto */}
+          <div className="flex items-center justify-between">
+            <SmartPackLogo />
+            <div className="text-right">
+              <p className="font-handwriting text-xl font-bold text-[#14532D]">
+                Compliant Packs Build Fair Markets.
               </p>
-              <div className="grid grid-cols-1 gap-2">
-                {statutoryDeclarations.map((item, idx) => (
-                  <div key={idx} className="flex items-center space-x-2 text-xs text-slate-700">
-                    <div className="w-4 h-4 rounded-full bg-forest-100 text-forest-700 flex items-center justify-center flex-shrink-0">
-                      <Check className="w-3 h-3 stroke-[3]" />
-                    </div>
-                    <span className="font-medium">{item}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Graphic Illustration */}
-            <div className="flex items-center justify-between pt-2">
-              <PackageInspectionIllustration className="w-44 shadow-sm" />
-              <FairTradeStamp className="w-20 h-20 shadow-2xs" />
+              <div className="w-28 h-1 bg-amber-400 rounded-full ml-auto" />
             </div>
           </div>
 
-          <div className="pt-4 border-t border-sand-300/60">
-            <LegalRuleBooksIllustration className="w-full" />
+          {/* Central Desk Scene: Pouch with Magnifying Glass Zoom & Extracted Snippets */}
+          <div className="relative bg-gradient-to-br from-amber-50/60 via-ivory-100 to-sand-100 p-6 rounded-3xl border border-sand-300 shadow-md my-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center">
+              {/* Left Notepad Checklist Tape Note */}
+              <div className="bg-[#FAF7EE] p-4 rounded-2xl border border-sand-300 shadow-sm space-y-2 transform -rotate-1 relative">
+                <div className="w-12 h-3 bg-amber-200/80 rounded mx-auto -mt-6 opacity-70 shadow-2xs" />
+                <p className="font-bold text-xs text-slate-800 border-b border-sand-200 pb-1 flex items-center gap-1">
+                  <CheckSquare className="w-3.5 h-3.5 text-[#14532D]" />
+                  <span>Inspection Checklist</span>
+                </p>
+                <div className="space-y-1.5 text-xs font-sans text-slate-700">
+                  {checklistItems.map((item, idx) => (
+                    <div key={idx} className="flex items-center space-x-2">
+                      <span className="text-[#14532D] font-bold">☑</span>
+                      <span>{item}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Package Label Magnifying Glass Zoomed Card */}
+              <div className="relative bg-white p-4 rounded-2xl border-2 border-slate-800 shadow-xl space-y-2">
+                <div className="flex items-center justify-between border-b border-slate-200 pb-1.5">
+                  <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">OCR Magnifier</span>
+                  <Search className="w-4 h-4 text-[#14532D]" />
+                </div>
+                <div className="space-y-1 font-mono text-[11px] text-slate-800 bg-sand-50 p-2.5 rounded-lg border border-sand-200">
+                  <p><strong className="text-slate-600">Net Quantity :</strong> <span className="font-bold text-[#14532D]">100 g</span></p>
+                  <p><strong className="text-slate-600">MRP :</strong> <span className="font-bold text-[#14532D]">₹ 40.00</span> (Incl. of all taxes)</p>
+                  <p><strong className="text-slate-600">Mfg. Date :</strong> 12/09/2026</p>
+                  <p><strong className="text-slate-600">Best Before :</strong> 11/03/2027</p>
+                </div>
+                <div className="text-center pt-1">
+                  <span className="font-mono text-[9px] tracking-widest text-slate-500">||| |||| || ||| |||| 8 906123 456789</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Top Tape Note on Pouch */}
+            <div className="absolute top-2 right-4 bg-[#FEF3C7] border border-[#FDE68A] p-2 rounded-xl text-[10px] font-handwriting font-bold text-amber-900 shadow-xs transform rotate-2">
+              <p>Scan / Read Labels</p>
+              <p>Check Declarations</p>
+              <p>Ensure Compliance</p>
+            </div>
+          </div>
+
+          {/* Bottom Desk Equipment: Books + Weighing Scale + Sticky Note + Fair Trade Stamp */}
+          <div className="grid grid-cols-1 sm:grid-cols-12 gap-4 items-end">
+            <div className="sm:col-span-6 space-y-3">
+              <LegalRuleBooksIllustration className="w-full h-32" />
+            </div>
+
+            <div className="sm:col-span-6 flex items-center justify-between gap-2">
+              {/* Sticky Note */}
+              <div className="bg-[#FEF9C3] p-3 rounded-xl border border-[#FDE047] text-xs font-handwriting text-amber-950 shadow-xs max-w-[150px] transform -rotate-2">
+                "Accurate labels. Informed consumers. Stronger markets."
+              </div>
+
+              {/* Fair Trade Stamp */}
+              <FairTradeStamp className="w-20 h-20 shrink-0" />
+            </div>
           </div>
         </div>
 
-        {/* RIGHT PANEL: Create Inspector Account Form */}
-        <div className="lg:col-span-6 p-8 lg:p-12 flex flex-col justify-center space-y-6 bg-white">
-          <div className="text-center space-y-2">
-            <div className="w-12 h-12 rounded-2xl bg-forest-100 text-forest-700 flex items-center justify-center mx-auto shadow-xs border border-forest-200">
-              <UserIcon className="w-6 h-6" />
-            </div>
-            <h3 className="text-2xl font-bold font-serif text-slate-900">Create Your Inspector Account</h3>
-            <p className="text-xs text-slate-500">Register for SmartPack Legal Metrology Screening System</p>
+        {/* RIGHT COLUMN: Create Your Inspector Account Form */}
+        <div className="lg:col-span-6 space-y-6 relative">
+          {/* Top Right Hand-written Annotation */}
+          <div className="flex justify-end items-center gap-1.5 text-xs text-slate-600 font-handwriting font-bold">
+            <span>Secure Inspection workspace</span>
+            <Lock className="w-3.5 h-3.5 text-slate-700" />
           </div>
 
-          {error && (
-            <div className="bg-rose-50 border border-rose-200 text-rose-800 p-3.5 rounded-xl text-xs flex items-center gap-2.5 shadow-xs">
-              <AlertCircle className="w-4 h-4 flex-shrink-0 text-rose-600" />
-              <span className="font-medium">{error}</span>
-            </div>
-          )}
+          {/* Mandatory Preliminary Screening Notice */}
+          <DisclaimerBanner />
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5 font-sans">
-                Full Name
-              </label>
-              <div className="relative">
-                <UserIcon className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-                <input
-                  type="text"
-                  required
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="Inspector Rajesh Kumar"
-                  className="w-full pl-10 pr-4 py-2.5 bg-ivory-50 border border-sand-300 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-forest-600/30 focus:border-forest-600 transition-all"
-                />
+          {/* Main Registration Form Card */}
+          <div className="bg-white rounded-3xl p-6 sm:p-8 border border-sand-300 shadow-xl space-y-6 relative">
+            <div className="space-y-1">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-[#14532D] font-sans">
+                JOIN SMARTPACK
+              </span>
+              <h1 className="font-serif text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight">
+                Create Your Inspector Account
+              </h1>
+              <p className="text-xs sm:text-sm text-slate-600 font-sans">
+                Register for SmartPack Legal Metrology Screening System to start inspecting packaged products.
+              </p>
+            </div>
+
+            {error && (
+              <div className="bg-rose-50 border border-rose-200 text-rose-800 p-3.5 rounded-xl text-xs flex items-center gap-2.5 shadow-xs">
+                <AlertCircle className="w-4 h-4 shrink-0 text-rose-600" />
+                <span className="font-medium">{error}</span>
               </div>
-            </div>
+            )}
 
-            <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5 font-sans">
-                Email Address
-              </label>
-              <div className="relative">
-                <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-                <input
-                  type="email"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="harini@gmail.com"
-                  className="w-full pl-10 pr-4 py-2.5 bg-ivory-50 border border-sand-300 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-forest-600/30 focus:border-forest-600 transition-all"
-                />
+            <form onSubmit={handleSubmit} className="space-y-4">
+              {/* FULL NAME */}
+              <div>
+                <label className="block text-[10px] font-bold tracking-wider text-slate-700 uppercase font-sans mb-1.5">
+                  FULL NAME
+                </label>
+                <div className="relative">
+                  <UserIcon className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
+                  <input
+                    type="text"
+                    required
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="Inspector Rajesh Kumar"
+                    className="w-full pl-10 pr-4 py-3 bg-[#F3F4F6] border border-slate-300 rounded-xl text-xs sm:text-sm text-slate-900 placeholder-slate-400 font-sans focus:outline-none focus:ring-2 focus:ring-forest-600/30 focus:border-forest-600 shadow-2xs"
+                  />
+                </div>
               </div>
-            </div>
 
-            <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5 font-sans">
-                Password
-              </label>
-              <div className="relative">
-                <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-                <input
-                  type="password"
-                  required
-                  minLength={6}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Minimum 6 characters"
-                  className="w-full pl-10 pr-4 py-2.5 bg-ivory-50 border border-sand-300 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-forest-600/30 focus:border-forest-600 transition-all"
-                />
+              {/* EMAIL ADDRESS */}
+              <div>
+                <label className="block text-[10px] font-bold tracking-wider text-slate-700 uppercase font-sans mb-1.5">
+                  EMAIL ADDRESS
+                </label>
+                <div className="relative">
+                  <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
+                  <input
+                    type="email"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="harini@gmail.com"
+                    className="w-full pl-10 pr-4 py-3 bg-[#F3F4F6] border border-slate-300 rounded-xl text-xs sm:text-sm text-slate-900 placeholder-slate-400 font-sans focus:outline-none focus:ring-2 focus:ring-forest-600/30 focus:border-forest-600 shadow-2xs"
+                  />
+                </div>
               </div>
+
+              {/* PASSWORD */}
+              <div>
+                <label className="block text-[10px] font-bold tracking-wider text-slate-700 uppercase font-sans mb-1.5">
+                  PASSWORD
+                </label>
+                <div className="relative">
+                  <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
+                  <input
+                    type="password"
+                    required
+                    minLength={6}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="••••••••"
+                    className="w-full pl-10 pr-4 py-3 bg-[#F3F4F6] border border-slate-300 rounded-xl text-xs sm:text-sm text-slate-900 placeholder-slate-400 font-sans focus:outline-none focus:ring-2 focus:ring-forest-600/30 focus:border-forest-600 shadow-2xs"
+                  />
+                </div>
+              </div>
+
+              {/* Action Button */}
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-[#0F392B] hover:bg-[#16503d] disabled:opacity-50 text-white font-bold py-3.5 px-6 rounded-xl shadow-md transition-all text-xs sm:text-sm flex items-center justify-center gap-2 border border-[#0d3125] cursor-pointer mt-4"
+              >
+                {loading ? (
+                  <span>Creating Account...</span>
+                ) : (
+                  <>
+                    <span>Register Inspector Account</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </>
+                )}
+              </button>
+            </form>
+
+            {/* Already registered footer */}
+            <div className="text-center pt-3 border-t border-sand-200/80">
+              <p className="text-xs text-slate-600 font-sans">
+                Already registered?{' '}
+                <Link to="/login" className="text-[#14532D] font-bold hover:underline">
+                  Sign In
+                </Link>
+              </p>
             </div>
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-forest-700 hover:bg-forest-600 disabled:opacity-50 text-white font-bold py-3 rounded-xl shadow-md shadow-forest-900/20 flex items-center justify-center gap-2 transition-all text-xs tracking-wide uppercase mt-4"
-            >
-              {loading ? (
-                <span>Creating Account...</span>
-              ) : (
-                <>
-                  <span>Register Inspector Account</span>
-                  <CheckCircle2 className="w-4 h-4" />
-                </>
-              )}
-            </button>
-          </form>
-
-          <div className="text-center pt-3 border-t border-sand-200">
-            <p className="text-xs text-slate-500">
-              Already registered?{' '}
-              <Link to="/login" className="text-forest-700 font-bold hover:underline ml-1">
-                Sign In →
-              </Link>
-            </p>
           </div>
         </div>
       </div>
+
+      {/* Right Screen Edge Botanical Leaf Accent */}
+      <BotanicalLeafAccent className="hidden xl:block absolute top-10 -right-8 w-40 h-80 text-[#14532D] opacity-40 pointer-events-none" />
     </div>
   );
 };

@@ -90,7 +90,7 @@ export default function App() {
           element={
             user ? (
               <Layout user={user} onLogout={() => setUser(null)} showSidebar={true}>
-                <DashboardPage />
+                <DashboardPage user={user} />
               </Layout>
             ) : (
               <Navigate to="/login" replace />

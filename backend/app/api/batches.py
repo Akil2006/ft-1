@@ -63,17 +63,35 @@ async def create_batch_inspection(
         inspections=[InspectionResponse.model_validate(i) for i in inspections]
     )
 
-@router.get("", response_model=List[BatchResponse])
+@router.get("", response_model=List[BatchDetailResponse])
 def list_batches(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
-    """Lists batch inspection sessions created by the current user."""
+    """Lists batch inspection sessions created by the current user with associated inspections."""
     batches = db.query(InspectionBatch)\
         .filter(InspectionBatch.user_id == current_user.id)\
         .order_by(InspectionBatch.created_at.desc())\
         .all()
-    return batches
+    
+    result = []
+    for b in batches:
+        inspections = db.query(Inspection).filter(Inspection.batch_id == b.id).all()
+        result.append(
+            BatchDetailResponse(
+                id=b.id,
+                user_id=b.user_id,
+                name=b.name,
+                status=b.status,
+                total_count=b.total_count,
+                completed_count=b.completed_count,
+                failed_count=b.failed_count,
+                created_at=b.created_at,
+                updated_at=b.updated_at,
+                inspections=[InspectionResponse.model_validate(i) for i in inspections]
+            )
+        )
+    return result
 
 @router.get("/{batch_id}", response_model=BatchDetailResponse)
 def get_batch(

@@ -17,8 +17,8 @@ export const batchApi = {
     return response.data;
   },
 
-  async listBatches(): Promise<BatchResponse[]> {
-    const response = await apiClient.get<BatchResponse[]>('/batches');
+  async listBatches(): Promise<BatchDetailResponse[]> {
+    const response = await apiClient.get<BatchDetailResponse[]>('/batches');
     return response.data;
   },
 
