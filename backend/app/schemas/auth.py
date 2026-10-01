@@ -4,8 +4,8 @@ from pydantic import BaseModel, EmailStr, Field, ConfigDict
 from app.models.user import UserRole
 
 class UserRegister(BaseModel):
-    name: str = Field(..., min_length=2, max_length=255, description="Full Name")
-    email: EmailStr = Field(..., description="Email address")
+    name: str = Field(..., min_length=1, max_length=255, description="Full Name")
+    email: str = Field(..., min_length=3, max_length=255, description="Email address")
     password: str = Field(..., min_length=6, max_length=128, description="Password")
 
 class UserResponse(BaseModel):

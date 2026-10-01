@@ -34,16 +34,31 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onRegisterSuccess })
       await authApi.register({ name, email, password });
 
       // 2. Auto-login immediately for seamless user onboarding
-      await authApi.login({ email, password });
-      if (onRegisterSuccess) onRegisterSuccess();
-      navigate('/dashboard');
+      try {
+        await authApi.login({ email, password });
+        if (onRegisterSuccess) onRegisterSuccess();
+        navigate('/dashboard');
+        return;
+      } catch (loginErr) {
+        // If registration succeeded but auto-login failed, navigate to login page with prefilled email
+        navigate('/login', { state: { email } });
+        return;
+      }
     } catch (err: any) {
+      const status = err.response?.status;
       const detail = err.response?.data?.detail;
-      if (detail && (detail.includes('already exists') || err.response?.status === 409)) {
+      let msg = 'Registration failed. Please check your details and try again.';
+      if (typeof detail === 'string') {
+        msg = detail;
+      } else if (Array.isArray(detail)) {
+        msg = detail.map((d: any) => d.msg || JSON.stringify(d)).join(', ');
+      }
+
+      if (status === 409 || msg.toLowerCase().includes('already exists')) {
         setIsAlreadyRegistered(true);
         setError(`An inspector account for "${email}" is already registered. Click below to sign in directly!`);
       } else {
-        setError(detail || 'Registration failed. Please check your details and try again.');
+        setError(msg);
       }
     } finally {
       setLoading(false);
